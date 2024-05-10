@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Bar Chart</title>
+	<script src="../../../Chart.min.js"></script>
+	<script src="../../utils.js"></script>
+	<style>
+	canvas {
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+	</style>
+</head>
+
+<body>
+	<div id="container" style="width: 75%;">
+		<canvas id="canvas"></canvas>
+	</div>
+	<script>
+		var SPRINTS = ['1', '2', '3', '4', '5'];
+		var color = Chart.helpers.color;
+		var barChartData = {
+			labels: ['1', '2', '3', '4', '5'],
+			datasets: [{
+				label: 'Itens Entregues',
+				//minBarLength: 2,
+				//barPercentage: 1,
+				//barThickness: 6,
+				//maxBarThickness: 8,
+				backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.gree,
+				borderWidth: 1,
+				data: [1, 4, 3, 1, 5]
+			}
+			]
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myBar = new Chart(ctx, {
+				type: 'bar',
+				data: barChartData,
+				options: {
+					responsive: true,
+					legend: {
+						position: 'top',
+					},
+					title: {
+						display: true,
+						text: 'Taxa de vazão (Throughput)'
+					},
+					scales: {
+						xAxes: [{
+								scaleLabel: {
+										display: true,
+										labelString: 'Sprints'
+									}
+								}],
+						yAxes: [{
+							stacked: true,
+							scaleLabel: {
+								display: true,
+								labelString: 'Qtde itens entregues'
+							}
+						}]
+					}
+				}
+			});
+
+		};
+
+
+
+
+	</script>
+</body>
+
+</html>

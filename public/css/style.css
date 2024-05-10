@@ -1,0 +1,21 @@
+div#container{
+	position:absolute;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left:0px;
+	background-color: #fff;
+	display: block;
+}
+div#loader{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left:0px;
+	background-color: #fff;
+	background-image: url('../img/animacao_inicial.gif');
+	background-position: center center;
+	background-repeat: no-repeat;
+	
+}

@@ -1,0 +1,86 @@
+
+saveHistoryKanban(target.id, target.innerHTML, source.id, source.innerHTML);
+
+
+
+receive_pos_kanban_new
+
+
+SELECT * FROM `historias_jogo` where id_jogo = 71;
+SELECT * FROM `etapas_jogo`  where room = '1071-1';
+SELECT * FROM `historia_jogo_dia` where room = '1071-1';
+
+
+Primeira correção:
+
+desliguei a chamada da funcao 'saveHistoryKanban(target.id, target.innerHTML, source.id, source.innerHTML);', pois aparentemente estava com erro no momento de atualizar a tela de todos os demais jogadores da mesma room, mas gravava na tabela `etapas_jogo`, que é usada para carregar o jogo, sempre que alguem entra na sala ou atualiza a pagina.
+
+segunda correção:
+
+De alguma forma que ainda não entendi, a funcao "saveHistory" já consegue salvar os registros na tabela `historias_jogo` corretamente e atualizar a tela dos demais jogadores da room, onde a pessoa mudou o post-it de coluna.
+
+Agora preciso carregar o jogo olhando para a tabela `historias_jogo` e ignorar os registros da tabela `etapas_jogo`.
+
+
+SELECT room, etapa, valor, data_atualizacao FROM `etapas_jogo` WHERE room = '1071-1'
+
+1071-1
+div-backlog
+<div class="postit font-cards" id="historia-2"><b>...
+2023-04-01 16:29:28
+
+
+
+SELECT h.id as id, coalesce(h.numero, 0) as numero, coalesce(h.titulo, '') as titulo, 
+	coalesce(h.quantidade_pecas, 0) as quantidade_pecas, coalesce(h.roi_diario, 0) as roi_diario, 
+	coalesce(h.tamanho, '') as tamanho 
+FROM historias h 
+WHERE h.ativo = 's' 
+ORDER BY numero
+
+
+SELECT h.id as id, coalesce(h.numero, 0) as numero, coalesce(h.titulo, '') as titulo, 
+	coalesce(h.quantidade_pecas, 0) as quantidade_pecas, coalesce(h.roi_diario, 0) as roi_diario, 
+	coalesce(h.tamanho, '') as tamanho, hj.etapa, hj.room, hj.x, hj.y, hj.dia_inicio, hj.dia_fim, hj.data_atualizacao 
+FROM historias h 
+	LEFT JOIN historias_jogo hj ON hj.numero = h.id 
+WHERE h.ativo = 's' 
+ORDER BY numero;
+
+
+"SELECT h.id as id, coalesce(h.numero, 0) as numero, coalesce(h.titulo, '') as titulo, "
++"	coalesce(h.quantidade_pecas, 0) as quantidade_pecas, coalesce(h.roi_diario, 0) as roi_diario, "
+	coalesce(h.tamanho, '') as tamanho, hj.etapa, hj.room, hj.x, hj.y, hj.dia_inicio, hj.dia_fim, hj.data_atualizacao "
++"FROM historias h "
++"	LEFT JOIN ( select numero, etapa, room, x, y, dia_inicio, dia_fim, data_atualizacao "
++"               from historias_jogo hj where room = '1071-1' "
++"              ) AS hj on hj.numero = h.numero "
++"WHERE h.ativo = 's' "
++"ORDER BY numero";
+
+"SELECT h.id as id, coalesce(h.numero, 0) as numero, coalesce(h.titulo, '') as titulo, "
++"	coalesce(h.quantidade_pecas, 0) as quantidade_pecas, coalesce(h.roi_diario, 0) as roi_diario, "
+	coalesce(h.tamanho, '') as tamanho, hj.etapa, hj.room, hj.x, hj.y, hj.dia_inicio, hj.dia_fim, hj.data_atualizacao "
++"FROM historias h "
++"	LEFT JOIN ( select numero, etapa, room, x, y, dia_inicio, dia_fim, data_atualizacao "
++"               from historias_jogo hj where room = '1071-1' "
++"              ) AS hj on hj.numero = h.numero "
++"WHERE h.ativo = 's' "
++"ORDER BY numero";
+
+
+numero, 
+titulo, 
+quantidade_pecas, 
+roi_diario,
+tamanho, 
+etapa, 
+room, 
+x, 
+y,
+dia_inicio, 
+dia_fim, 
+data_atualizacao 
+
+
+<div class='postit font-cards' id='historia-32'><b><a href='#h32'> 32 - Passeio de Jipe</a></b><br> Qtde. Peças: 16<br>Tamanho: P<br> ROI diário: R$ 40,00</div>

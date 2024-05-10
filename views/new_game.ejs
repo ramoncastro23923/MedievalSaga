@@ -1,0 +1,1197 @@
+<html lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="shortcut icon" href="/imagens/favicon.ico" type="image/x-icon" />
+<title>Jogo</title>
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+    
+</head>
+<style>
+
+body {font-family: Arial, Helvetica, sans-serif;}
+
+.nomes {
+  font-size: 18px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column-left {
+  float: left;
+  margin-left: 20px;
+  width: 82%;
+  padding: 4px;
+  height: 28px;
+  border: 1px solid #4F4F4F;
+}
+
+.column-right {
+  float: left;
+  align: center;
+  width: 14%;
+  padding-left: 4px;
+  height: 28px;
+  border: 1px solid #4F4F4F;
+}
+
+.column-right-titulo {
+  padding: 4px;
+}
+
+.cor_resposta {
+	color: #0099cc;
+}
+
+/* Clear floats after the columns */
+/* .row:after {
+  content: "";
+  display: table;
+  clear: both;
+} */
+  
+  /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 200; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+.modal-content-alerta {
+	padding-top: 140px;
+	background-image: url(/imagens/game/fundo-mensagem-alerta-time.png);
+	background-repeat: no-repeat;
+	height: 440px;
+	width: 420px;
+	align-content: center;
+}
+
+.texto-alerta {
+	width: 280px;
+}
+
+.mensagens {
+  font-size: 24px;
+}
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
+.modal-container {
+	width: 380px;
+	margin-left: 10px;
+	margin-right: 10px;
+	text-align: left;
+}
+
+.modal-container-maior {
+	width: 390px;
+}
+
+.container-modal {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.modal-content-menor {
+	background-color: #fefefe;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 40%;
+	border-radius: 5px;
+}
+  
+  
+  /* edicao */
+.texto-input {
+  border-radius: 8px;
+  border-color: #D3D3D3;
+  background: #fff;/*#DCDCDC;*/
+  padding: 14px; 
+  width: 100%;
+  height: 16px; 
+  text-align: center;
+  font-size: 18px;
+  }
+
+.texto-input-add {
+  border-radius: 8px;
+  border-color: #D3D3D3;
+  background: #fff;/*#DCDCDC;*/
+  padding: 14px; 
+  width: 400px;
+  height: 16px; 
+  text-align: center;
+  font-size: 14px;
+}
+
+.button {
+  background-color: #008CBA; /* blue */
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  margin: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+@font-face {
+	font-family: "RegencyScriptFLF Regular";
+	src: url("/fonts/Burbank-Big-Condensed Black.ttf");
+}
+
+.font { font-family: "RegencyScriptFLF Regular"; }
+
+.box {
+    font-size: 24px;
+    padding-left: 20px;
+	padding-top: 48px;
+    text-align: center;
+	font-family: "RegencyScriptFLF Regular";
+}
+ 
+.tabela {
+	border:1px solid #4F4F4F;
+	background: #eeeeee;
+	width: 390px;
+	padding-left: 2px;
+	font-size: 14px;
+	color: #4F4F4F;
+}
+
+.div-tabela {
+	overflow:auto;
+	max-height:190px;
+	width: 550px;
+}
+  
+.appearance-select{
+   -webkit-appearance: none;  /* Remove estilo padrão do Chrome */
+   -moz-appearance: none; /* Remove estilo padrão do FireFox */
+   appearance: none; /* Remove estilo padrão do FireFox*/
+   background: url(/imagens/edicao/ico-seta-appearance.gif) no-repeat #eeeeee; /* Imagem de fundo (Seta) */
+   background-position: 30px center;  /*Posição da imagem do background*/
+   width: 60px; /* Tamanho do select, maior que o tamanho da div "div-select" */
+   height:22px; /* Altura do select, importante para que tenha a mesma altura em todo os navegadores */
+   border:1px solid #4F4F4F;
+   margin: 1px;
+   font-size: 14px;
+   text-align: center;
+   padding-left: 10px;
+}
+
+.modal-content-question {
+	padding-top: 150px;
+	background-image: url(/imagens/game/fundo-mensagem-alerta.png);
+	background-repeat: no-repeat;
+	height: 420px;
+	width: 390px;
+	align-content: center;
+}
+
+.titulos-new-game {
+  font-size: 28px;
+  color: #623510;
+  align-content: center;
+}
+
+.titulos-new-game-cabecalho {
+  font-size: 26px;
+  color: #623510;
+}
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
+<body>
+
+<% var quantidade_times = 4; %>
+
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+
+
+                                                           
+
+
+
+					
+<div align="center">
+
+	<div id="modal_add" class="modal">
+		<div class="modal-content-menor" id="div-add-jogadores">
+			<span id="modal-add" class="close">&times;</span>
+		</div>
+	</div>
+
+	<div id="modal_avisos" class="modal" style="padding-top: 100px;" align="center">
+		<div class="modal-content-alerta" id="div-avisos">
+		</div>
+	</div>
+
+	<div id="modal_question" class="modal" align="center">
+		<div class="modal-content-question" id="div-questions">
+		</div>
+	</div>
+
+	<form class="form-horizontal" role="form" id="form_dados" method="post" action="/home/new_game" onSubmit="return checkblank(this);">
+
+<!-- novo -->
+
+
+
+<% 
+
+
+var d = '';
+
+if(data[0].codigo_jogo > 0) {
+	d = new Date(data[0].data_jogo);
+	var dia=d.getDate();
+	var mes=d.getMonth();
+	var ano=d.getFullYear();
+	var hora=d.getHours();
+	var min=d.getMinutes();
+	var sec=d.getSeconds();
+
+	dia = (dia < 10 ? ('0' + dia) : dia);
+	mes = (mes++ < 10 ? ('0' + mes++) : mes++);
+	hora = (hora < 10 ? ('0' + hora) : hora);
+	min = (min < 10 ? ('0' + min) : min);
+	sec = (sec < 10 ? ('0' + sec) : sec);
+
+	d = dia + '/' + mes + '/' + ano + ' ' + hora + ':' + min + ':' + sec;
+}
+
+%>
+
+<table id="Tabela_01" style="background-image: url(/imagens/edicao/fundo_geral.jpg);" width="1291" height="656" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td colspan="27" width="1290" height="1"></td>
+		<td width="1" height="1"></td>
+	</tr>
+	
+	<tr>
+		<td colspan="7" width="414" height="60">
+		<% if (data.length > 0) { %>
+			<div><b class="titulos-new-game-cabecalho font">Código:</b> <%= data[0].codigo_jogo %></div>
+			<div><b class="titulos-new-game-cabecalho font">Última atualização:</b> <%= d %></div>
+		<% } %>
+		</td>
+		<td colspan="13" align="center">
+			<img src="/imagens/edicao/logo.png" width="70%" height="70%" alt=""></td>
+		<td colspan="7" width="415" height="60"></td>
+		<td width="1" height="60"></td>
+	</tr>
+	
+	<tr>
+		<td colspan="2" rowspan="4" width="156" height="267"></td>
+		<td colspan="2" rowspan="2">
+			<img src="/imagens/edicao/label-min-pontos.png" width="99" height="92" alt=""></td>
+		<td rowspan="3" width="38" height="132"></td>
+		<td rowspan="2">
+			<img src="/imagens/edicao/label-max-pontos.png" width="100" height="92" alt=""></td>
+		<td rowspan="3" width="21" height="132"></td>
+		<td width="26" height="1"></td>
+		<td colspan="3" rowspan="2">
+			<img src="/imagens/edicao/label-min-planning.png" width="102" height="92" alt=""></td>
+		<td colspan="6" width="173" height="1"></td>
+		<td rowspan="2">
+			<img src="/imagens/edicao/label-min-daily.png" width="112" height="92" alt=""></td>
+		<td width="38" height="1"></td>
+		<td colspan="3" rowspan="2">
+			<img src="/imagens/edicao/label-min-review.png" width="101" height="92" alt=""></td>
+		<td rowspan="3" width="36" height="132"></td>
+		<td colspan="2" rowspan="2">
+			<img src="/imagens/edicao/label-min-retro.png" width="109" height="92" alt=""></td>
+		<td colspan="2" rowspan="4" width="179" height="267"></td>
+		<td width="1" height="1"></td>
+	</tr>
+	
+	<tr>
+		<td rowspan="2" width="26" height="131"></td>
+		<td rowspan="2" width="34" height="131"></td>
+		<td colspan="2">
+			<img src="/imagens/edicao/label-min-execucao.png" width="110" height="91" alt=""></td>
+		<td colspan="3" rowspan="2" width="29" height="131"></td>
+		<td rowspan="2" width="38" height="131"></td>
+		<td width="1" height="91"></td>
+	</tr>
+	
+	<tr>
+		<td colspan="2">
+			<input type="text" class="texto-input font" name="min_pontos_dev" id="min_pontos_dev" placeholder=""
+			<% if (data.length > 0) { %> 
+				  value="<%=data[0].min_pontos_dev%>"
+				<% } %>
+			>
+			</td>
+		<td>
+			<input type="text" class="texto-input font" name="max_pontos_dev" id="max_pontos_dev" placeholder=""
+			<% if (data.length > 0) { %> 
+			  value="<%=data[0].max_pontos_dev%>"
+			<% } %>
+			</td>
+		<td colspan="3">
+			<input type="text" class="texto-input font" name="minutos_planning" id="minutos_planning" placeholder=""
+			<% if (data.length > 0) { %> 
+			  value="<%=data[0].minutos_planning%>"
+			<% } %>
+			</td>
+		<td colspan="2">
+			<input type="text" class="texto-input font" name="minutos_execucao" id="minutos_execucao" placeholder=""
+			<% if (data.length > 0) { %> 
+			  value="<%=data[0].minutos_execucao%>"
+			<% } %>
+			</td>
+		<td>
+			<input type="text" class="texto-input font" name="minutos_daily" id="minutos_daily" placeholder=""
+			<% if (data.length > 0) { %> 
+			  value="<%=data[0].minutos_daily%>"
+			<% } %>
+			>
+			</td>
+		<td colspan="3">
+			<input type="text" class="texto-input font" name="minutos_review" id="minutos_review" placeholder=""
+			<% if (data.length > 0) { %> 
+			  value="<%=data[0].minutos_review%>"
+			<% } %>
+			></td>
+		<td colspan="2">
+			<input type="text" class="texto-input font" name="minutos_retrospective" id="minutos_retrospective" placeholder="" 
+			<% if (data.length > 0) { %> 
+			  value="<%=data[0].minutos_retrospective%>"
+			<% } %>
+			>
+			</td>
+		<td width="1" height="40"></td>
+	</tr>
+	
+	
+	<tr>
+		<td width="37" height="135"></td>
+		<td colspan="21">
+			<div align="center">
+			<table>
+				<tr>
+				<!-- avatar jogadores -->
+				<% for(var i=0; i < data2.length; i++) { %>
+					<td style="padding:10px;background-image: url(/imagens/edicao/fundo-avatar.png);background-size: 93%;background-repeat: no-repeat;">
+						<img width="75" height="75" class="imagens" src="<%=data2[i].caminho_avatar %>" alt="Paris">
+					</td>
+				<% } %>
+				</tr>
+				<tr class="nomes font" align="center">
+				<!-- nome jogadores -->	
+				<% for(var i=0; i < data2.length; i++) { %>
+					<td align="left">
+						<input  type="checkbox" name="chklista" id="jogador_<%= data2[i].jogador_id %>" value="<%= data2[i].jogador_id %>" 
+						  <% if (data2[i].jog_jogador_id > 0) { %> 
+							<%="checked"%>
+						  <% } %>
+						  >
+						 <%=data2[i].jogador_nome %>
+					</td>
+				<% } %>
+				</tr>
+			</table>
+			</div>
+		</td>
+		<td width="35" height="135"></td>
+		<td width="1" height="135"></td>
+	</tr>
+	
+	<tr>
+		<td rowspan="12" width="144" height="295"></td>
+		<td colspan="8">
+			<a href="#" onClick="abrirModalAdd()">
+			<img src="/imagens/edicao/label-configuracao.png" width="100%" height="100%" alt=""></a></td>
+		<td width="15" height="59"></td>
+		<td colspan="3" rowspan="2"></a></td>
+		<td colspan="3" width="28" height="59" width="197" height="72"></td>
+		<td colspan="3" rowspan="2" width="156" height="72" alt="" class="titulos-new-game font">
+			Jogo físico?
+			<label class="switch">
+				<input name="jogo_fisico" id="jogo_fisico" type="checkbox"
+				<% if (data.length > 0 && data[0].jogo_fisico == 's') { %> 
+					<%="checked"%>
+				  <% } %>
+				>
+
+				<span class="slider round"></span>
+			  </label>
+		</td>
+		<td colspan="2" rowspan="2" width="75" height="72">
+		</td>
+		<td colspan="5" rowspan="4" width="197" height="72" border="0" alt="">
+			<a href="#" onClick="copiarTexto()">
+				<img src="/imagens/edicao/btn-copiar-url.png" alt=""></a>
+		</td>
+		<td rowspan="12" width="161" height="295"></td>
+		<td width="1" height="59"></td>
+	</tr>
+	
+	<tr>
+		<td id="xpto" colspan="12" rowspan="10" >
+
+		<!-- <div class="div-tabela">
+		<div>
+			<div class="column-left" style="background-color:#aaa;">
+			  <span>E-mail</span>
+			</div>
+			<div class="column-right column-right-titulo" style="background-color:#aaa;">
+				<span>Time</span>
+			</div>
+		</div>
+		<% if (typeof data3 !== 'undefined' && data3 !== null){ %>
+			<% for(var i=0; i < data3.length; i++) { %>
+
+		  <div>
+			<div class="column-left" style="background-color:#fff;">
+			
+				<span><%=data3[i].email %></span>
+			</div>
+			<div class="column-right" style="background-color:#fff;">
+				<span>
+				<select name="participante_<%=data3[i].id %>" class="appearance-select">
+					<% for(var z=0; z <= quantidade_times; z++) { %>
+					<option value="<%=z%>"
+					<% if(data3[i].time == z){ %>
+						selected=true
+					<% } %>
+						><%=z%></option>
+					<% } %>
+				</select>
+			</span>
+			</div>
+		  </div>
+		  
+			<% } %>
+		<% } %>
+		</div> -->
+	
+	</td>
+		<td colspan="2" rowspan="10" width="27" height="215"></td>
+		<td rowspan="11" width="1" height="236"></td>
+		<td width="1" height="1"></td>
+	</tr>
+	
+	<tr>
+		
+		<td width="1" height="12"></td>
+	</tr>
+	<tr>
+		<td colspan="5" rowspan="9" width="231" height="223"></td>
+		<td width="1" height="15"></td>
+	</tr>
+	<tr>
+		<td colspan="5" width="189" height="1"></td>
+		<td width="1" height="1"></td>
+	</tr>
+	
+	<tr>
+		<td colspan="5">
+			<a href="#" onClick="document.getElementById('form_dados').submit();">
+				<img src="/imagens/edicao/btn-salvar.png" width="189" height="66" border="0" alt=""></a></td>
+		<td width="1" height="56"></td>
+	</tr>
+	<tr>
+		<td colspan="5" width="189" height="1"></td>
+		<td width="1" height="1"></td>
+	</tr>
+
+	<tr>
+	<% if (data.length > 0) { %>
+		<td colspan="5">
+			<!-- <a href="#" onClick="finalizar('/home/new_game/finalizar', {jogo_id: '<%=data[0].jogo_id %>', nova_janela: 'false'})">
+				<img src="/imagens/edicao/btn-finalizar.png" width="189" height="56" border="0" alt=""></a></td> -->
+
+			<a href="#" onClick="openQuestion('Deseja realmente finalizar este jogo?', 'finalizar-jogo')">
+				<img src="/imagens/edicao/btn-finalizar.png" width="189" height="56" border="0" alt=""></a></td>
+	<% } else { %>
+	<% } %>
+		<td width="1" height="56"></td>
+	</tr>
+	<tr>
+		<td colspan="5" width="189" height="1"></td>
+		<td width="1" height="1"></td>
+	</tr>
+	<tr>
+		<td colspan="5">
+			<a href="/home">
+				<img src="/imagens/edicao/btn-sair.png" width="189" height="56" border="0" alt=""></a></td>
+		<td width="1" height="56"></td>
+	</tr>
+	
+	<tr>
+		<td colspan="5" rowspan="2" width="189" height="37"></td>
+		<td width="1" height="16"></td>
+	</tr>
+	<tr>
+		<td colspan="14" width="564" height="21"></td>
+		<td width="1" height="21"></td>
+	</tr>
+		<tr>
+		<td width="144" height="1"></td>
+		<td width="12" height="1"></td>
+		<td width="37" height="1"></td>
+		<td width="62" height="1"></td>
+		<td width="38" height="1"></td>
+		<td width="100" height="1"></td>
+		<td width="21" height="1"></td>
+		<td width="26" height="1"></td>
+		<td width="29" height="1"></td>
+		<td width="15" height="1"></td>
+		<td width="58" height="1"></td>
+		<td width="34" height="1"></td>
+		<td width="105" height="1"></td>
+		<td width="5" height="1"></td>
+		<td width="22" height="1"></td>
+		<td width="1" height="1"></td>
+		<td width="6" height="1"></td>
+		<td width="112" height="1"></td>
+		<td width="38" height="1"></td>
+		<td width="10" height="1"></td>
+		<td width="65" height="1"></td>
+		<td width="26" height="1"></td>
+		<td width="36" height="1"></td>
+		<td width="74" height="1"></td>
+		<td width="35" height="1"></td>
+		<td width="18" height="1"></td>
+		<td width="161" height="1"></td>
+		<td></td>
+	</tr>
+</table>
+
+<% if (message_erro.length > 0) { %>
+                                <div class="alert alert-success col-sm-12"><%= message_erro %></div>
+                                <% } %>
+                                <div id="signupalert" style="display:none" class="alert alert-danger">
+                                  <% if (message_erro.length > 0) { %>
+                                    <p>Atenção: <%= message_erro %></p>
+                                  <% } %>
+                                    <span></span>
+                                </div>
+
+                                <input type="hidden" name="jogo_id"  
+                                <% if (data.length > 0) { %> 
+                                  value=<%= data[0].jogo_id %>
+                                <% } else { %>
+                                value="0"
+                                <% } %>
+                                >
+								
+								</form>
+
+<!-- novo -->
+
+
+
+</div>
+							
+							
+							
+							
+							
+							
+							
+                                <% if (message_erro.length > 0) { %>
+                                <div class="alert alert-success col-sm-12"><%= message_erro %></div>
+                                <% } %>
+                                <div id="signupalert" style="display:none" class="alert alert-danger">
+                                  <% if (message_erro.length > 0) { %>
+                                    <p>Atenção: <%= message_erro %></p>
+                                  <% } %>
+                                    <span></span>
+                                </div>
+
+                                <input type="hidden" name="jogo_id"  
+                                <% if (data.length > 0) { %> 
+                                  value=<%= data[0].jogo_id %>
+                                <% } else { %>
+                                value="0"
+                                <% } %>
+                                >
+								
+								</form>
+                         
+
+                         <!-- Trigger/Open The Modal -->
+                        <!--<button id="btn_times">Configurar Times</button>-->
+
+                        <!-- The Modal -->
+                        <!--<div id="modal_times" class="modal"> -->
+
+                          <!-- Modal content -->
+                         <!-- <div class="modal-content" id="div-links">
+                            <span class="close">&times;</span>
+                            <p>Lista de times e links para reuniões</p>
+                          </div>
+
+                        </div> -->
+
+              
+                
+
+   
+</body>
+</html>
+ 
+<script>
+
+
+
+<% if(typeof data[0].codigo_jogo === 'undefined' || data[0].codigo_jogo === ''){ %>
+	carregarValoresPadrao();
+<% } %>
+
+
+var quantidade_times = 4;
+
+carregarParticipantes();
+
+  // Get the modal
+  var modal = document.getElementById("modal_times");
+  
+//   // Get the button that opens the modal
+//   var btn = document.getElementById("btn_times");
+  
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[1];
+  
+//   // When the user clicks the button, open the modal 
+//   btn.onclick = function() {
+//     carregarTimes();
+//     modal.style.display = "block";
+//   }
+  
+//   // When the user clicks on <span> (x), close the modal
+//   span.onclick = function() {
+//     modal.style.display = "none";
+//   }
+  
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+
+
+function carregarTimes(){
+
+  console.log("Vai chamar o carregartimes para o jogo <%=data[0].id_jogo%>");
+
+  $.ajax({
+    url: "/game/carregar_times",
+    data: { id_jogo: '<%=data[0].jogo_id%>' },
+    type: "POST",
+    beforeSend: function() {
+      //$("#" + formName).html(preloaderAzul);
+    },
+    success: function(response) {
+      console.log('Resposta ajax carregar:' + response.length);
+
+      for(var i=0; i < quantidade_times; i++) {
+
+        div = document.createElement('div');
+        div.className = 'row';
+        div.innerHTML = "<div>Time "+(i+1)+" <input type='text' class='form-control' name='links' id='time-"+(i+1)+"' placeholder=''></div>";
+        
+        //console.log('Resposta ajax carregar:' + response[i].link);
+      
+        //if(response[i].link !== ''){
+          document.getElementById("div-links").appendChild(div);
+        //}
+      }
+
+      div = document.createElement('div');
+      div.className = 'row';
+      div.innerHTML = "<br><div><button id='btn-signup' type='submit' onclick='teste()' class='btn btn-info'><i class='icon-hand-right'></i>Salvar</button></div>";
+      document.getElementById("div-links").appendChild(div);
+    },
+  });
+}
+
+function teste(){
+  alert('teste 0');
+}
+
+function salvarTimes(){
+
+  $.ajax({
+    url: "/game/salvar_times",
+    data: { id_jogo: '<%=data[0].jogo_id%>' },
+    type: "POST",
+    beforeSend: function() {
+      //$("#" + formName).html(preloaderAzul);
+    },
+    success: function(response) {
+      console.log('Resposta ajax carregar:' + response.length);
+
+      for(var i=0; i < quantidade_times; i++) {
+
+        div = document.createElement('div');
+        div.className = 'row';
+        div.innerHTML = "<div>Time "+(i+1)+" <input type='text' class='form-control' name='links' id='time-"+(i+1)+"' placeholder=''></div>";
+        
+        //console.log('Resposta ajax carregar:' + response[i].link);
+      
+        //if(response[i].link !== ''){
+          document.getElementById("div-links").appendChild(div);
+        //}
+      }
+
+      div = document.createElement('div');
+      div.className = 'row';
+      div.innerHTML = "<br><div><button id='btn-signup' type='submit' onclick='teste()' class='btn btn-info'><i class='icon-hand-right'></i>Salvar</button></div>";
+      document.getElementById("div-links").appendChild(div);
+    },
+  });
+}
+
+function finalizar(path, params){
+	var id_jogo = '<%=data[0].jogo_id%>';
+
+	if (typeof id_jogo == 'undefined' || id_jogo < 1){
+		abrirModalAvisos('</br>Este jogo ainda não foi salvo, por isso não pode ser finalizado.');
+		return;
+	}
+	else {
+		post(path, params);
+	}
+
+}
+
+
+function post(path, params, method='post') {
+
+	// somente utilizo este metodo num jogo editado
+
+	<% if (data.length > 0) { %>
+		const form = document.createElement('form');
+		form.method = method;
+		form.action = path;
+
+		console.log(params['nova_janela']);
+
+		if(params.hasOwnProperty('nova_janela') && params['nova_janela'] == 'true'){
+			form.target = '_blank';
+		}
+
+
+		for (const key in params) {
+		if (params.hasOwnProperty(key) && params[key] !== 'nova_janela') {
+			const hiddenField = document.createElement('input');
+			hiddenField.type = 'hidden';
+			hiddenField.name = key;
+			hiddenField.value = params[key];
+
+			form.appendChild(hiddenField);
+			}
+		}
+
+		document.body.appendChild(form);
+		form.submit();
+	<% } %>
+}
+
+
+function carregarValoresPadrao(){
+	
+	// preenche as informacoes padrao de tempos para o jogo
+	document.getElementById("min_pontos_dev").value = 8;
+	document.getElementById("max_pontos_dev").value = 13;
+	document.getElementById("minutos_planning").value = 5;
+	document.getElementById("minutos_execucao").value = 4;
+	document.getElementById("minutos_daily").value = 1.0;
+	document.getElementById("minutos_review").value = 3;
+	document.getElementById("minutos_retrospective").value = 3;
+}
+
+
+let copiarTexto = () => {
+	//O texto que será copiado
+	//const texto = "localhost:3000/access/<%=data[0].codigo_jogo%>&<%=data[0].senha_jogo%>";
+	const texto = "<%=url_sistema%>/access/<%=data[0].codigo_jogo%>&<%=data[0].senha_jogo%>";
+	//Cria um elemento input (pode ser um textarea)
+	let inputTest = document.createElement("input");
+	inputTest.value = texto;
+	//Anexa o elemento ao body
+	document.body.appendChild(inputTest);
+	//seleciona todo o texto do elemento
+	inputTest.select();
+	//executa o comando copy
+	//aqui é feito o ato de copiar para a area de trabalho com base na seleção
+	document.execCommand('copy');
+	//remove o elemento
+	document.body.removeChild(inputTest);
+
+	var id_jogo = '<%=data[0].jogo_id%>';
+
+	if (typeof id_jogo == 'undefined' || id_jogo < 1){
+		abrirModalAvisos('</br>Salve o jogo antes de tentar copiar o endereço do Jogo!');
+		return;
+	}
+	else {
+		abrirModalAvisos('</br>Endereço copiado com sucesso!');
+	}
+};
+
+window.onclick = function(event) {
+	if (event.target == modal_add) {
+		modal_add.style.display = "none";
+	}
+}
+
+function fecharModal(){
+	modal_add.style.display = "none";
+}
+
+var modal_add = document.getElementById("modal_add");
+
+var span_add = document.getElementsByClassName("close")[0];
+
+
+function carregarParticipantes(){
+
+	// var html = "<div id='tabela-emails' class='div-tabela'>"
+	// +"	TESTE 3 "
+	// +"</div>";
+
+	var html = ""
+
+	+"<div class=\"div-tabela\">"
+	+"		<div>"
+	+"			<div class=\"column-left\" style=\"background-color:#aaa;\">"
+	+"			  <span>E-mail</span>"
+	+"			</div>"
+	+"			<div class=\"column-right column-right-titulo\" style=\"background-color:#aaa;\">"
+	+"				<span>Time</span>"
+	+"			</div>"
+	+"		</div>"
+	+"		<% if (typeof data3 !== 'undefined' && data3 !== null){ %>"
+	+"			<% for(var i=0; i < data3.length; i++) { %>"
+	+"		  <div>"
+	+"			<div class=\"column-left\" style=\"background-color:#fff;\">"
+	+"				<span><%=data3[i].email %></span>"
+	+"			</div>"
+	+"			<div class=\"column-right\" style=\"background-color:#fff;\">"
+	+"				<span>"
+	+"				<select name=\"participante_<%=data3[i].id %>\" class=\"appearance-select\">"
+	+"					<% for(var z=0; z <= quantidade_times; z++) { %>"
+	+"					<option value=\"<%=z%>\""
+	+"					<% if(data3[i].time == z){ %>"
+	+"						selected=true"
+	+"					<% } %>"
+	+"						><%=z%></option>"
+	+"					<% } %>"
+	+"				</select>"
+	+"			</span>"
+	+"			</div>"
+	+"		  </div>"
+	+"			<% } %>"
+	+"		<% } %>"
+	+"		</div>";
+		
+	document.getElementById('xpto').innerHTML = html;
+
+}
+
+function abrirModalAdd(){
+
+	var id_jogo = '<%=data[0].jogo_id%>';
+
+	if (typeof id_jogo == 'undefined' || id_jogo < 1){
+		abrirModalAvisos('</br>Salve o jogo antes de tentar adicionar jogadores!');
+		return;
+	}
+
+	modal_add.style.display = "block";
+
+	// $( "div" ).remove( "#div-obrigado" );
+	$( "div" ).remove( "#div-form-add" );
+
+	const div = document.createElement('div');
+	
+	div.innerHTML = "<div class='container-modal' id='div-form-add'>"
+	+"	</br><span class='box'>Preencha o e-mail do jogador e clique no botão <b>Adicionar</b></span>"
+	+"	<form id='form-jogadores'>"
+	+"		<input type='text' class='texto-input-add' id='email-jogador' value=''>"
+	+"		<span id='resposta' class='box cor_resposta'></span></br></br>"
+	+"		<div class='container-modal'>"
+	+"			<button class='button' type='button'  onClick='fecharModal()'>Fechar</button>"
+	+"			<button class='button' id='btnAdicionar' type='button'  onClick='saveAddJogadores()'>Adicionar</button>"
+	+"		</div>"
+	+"	</form>"
+	
+	+"</div>";
+
+	document.getElementById('div-add-jogadores').appendChild(div);
+
+	document.getElementById("email-jogador").focus();
+
+}
+
+span_add.onclick = function() {
+	modal_add.style.display = "none";
+}
+
+// question
+var modal_question = document.getElementById("modal_question");
+
+function openQuestion(msg, quemChamou){
+
+	modal_question.style.display = "block";
+
+	$( "div" ).remove( "#div-question" );
+
+	const div = document.createElement('div');
+	div.innerHTML = "<div id='div-question'><div class='container box font'><span class='texto-alerta'>"+msg+"</span></div><br>" 
+
+	+"<div class='container'> "
+	+"	<button class='button' type='button' onClick='confirmQuestion(\""+quemChamou+"\")'>Sim</button>"
+	+"	<button class='button' type='button' onClick='recuseQuestion(\""+quemChamou+"\")'>Não</button> "
+	+"</div></div>";
+
+	document.getElementById('div-questions').appendChild(div);
+
+}
+
+function confirmQuestion(quemChamou){
+	modal_question.style.display = "none";
+
+	if(quemChamou == 'finalizar-jogo'){
+		finalizar('/home/new_game/finalizar', {jogo_id: '<%=data[0].jogo_id %>', nova_janela: 'false'})
+	}
+}
+
+function recuseQuestion(quemChamou){
+	modal_question.style.display = "none";
+	
+	if(quemChamou == 'finalizar-jogo'){
+		return;
+	}
+}
+
+// fim
+
+document.addEventListener('keydown', function(e) {
+    if(e.key == "Enter"){
+	  document.getElementById("btnAdicionar").click();
+	  return;
+	}
+	
+	if(e.keyCode === 27){
+		fecharModal();
+    }
+});
+
+function saveAddJogadores(){
+	var email_jogador = document.getElementById('email-jogador').value;
+
+	if( email_jogador.trim() !== ''){
+		$.ajax({
+			url: "/game_control/adicionar_jogadores",
+			data: { 
+					id_jogo: '<%=data[0].jogo_id%>', 
+					codigo_jogo: '<%=data[0].codigo_jogo%>',
+					email: email_jogador
+					},
+			type: "POST",
+			beforeSend: function() {
+				//$("#" + formName).html(preloaderAzul);
+			},
+			success: function(response) {
+				console.log('Resposta ajax:' + response);
+
+				if(response.message_erro !== ''){
+
+					document.getElementById("email-jogador").value = "";
+					document.getElementById("email-jogador").focus();
+
+					document.getElementById("resposta").innerHTML = "</br></br>"+response.message_erro;
+
+									
+				}
+				else {
+					if (typeof response.data !== 'undefined' && response.data !== null){
+						var html = ""
+
+						+"<div class='div-tabela'>"
+						+"		<div>"
+						+"			<div class='column-left' style='background-color:#aaa;'>"
+						+"			  <span>E-mail</span>"
+						+"			</div>"
+						+"			<div class='column-right column-right-titulo' style='background-color:#aaa;'>"
+						+"				<span>Time</span>"
+						+"			</div>"
+						+"		</div>";
+								if (typeof response.data !== 'undefined' && response.data !== null){
+									for(var i=0; i < response.data.length; i++) {
+										console.log('Reg: ' + response.data[i].email);
+						html = html +"		  <div>"
+						+"			<div class='column-left' style='background-color:#fff;'>"
+						+"				<span>"+response.data[i].email+"</span>"
+						+"			</div>"
+						+"			<div class='column-right' style='background-color:#fff;'>"
+						+"				<span>"
+						+"				<select name='participante_"+response.data[i].id +"' class='appearance-select'>";
+											for(var z=0; z <= quantidade_times; z++) {
+						html = html +"					<option value='"+z+"'";
+											if(response.data[i].time == z){
+						html = html +"						selected=true";
+											}
+						html = html +"						>"+z+"</option>";
+											}
+						html = html +"				</select>"
+						+"			</span>"
+						+"			</div>"
+						+"		  </div>";
+									}
+								}
+						html = html +"		</div>";
+
+													
+						document.getElementById('xpto').innerHTML = html;			
+						
+						document.getElementById("resposta").innerHTML = "</br></br>"+response.message;
+			
+						document.getElementById("email-jogador").value = "";
+						document.getElementById("email-jogador").focus();
+
+					}
+				}
+
+				
+			},
+		});
+	}
+	else {
+		document.getElementById("resposta").innerHTML = "</br></br>Por favor informe um e-mail válido!";
+	}
+}
+
+var modal_avisos = document.getElementById("modal_avisos");
+
+function fecharModalAvisos(){
+	modal_avisos.style.display = "none";
+}
+
+function abrirModalAvisos(mensagem){
+	modal_avisos.style.display = "block";
+
+	$( "div" ).remove( "#div-aviso" );
+
+	const div = document.createElement('div');
+	div.innerHTML = "<div id='div-aviso'><div class='container-modal box font'><span class='texto-alerta mensagens'>"
+		+mensagem+"</span></div><br>" 
+
+	+"<div class='container'> "
+	+"	<button class='button' type='button'  onClick='fecharModalAvisos()''>Fechar</button> "
+	+"</div></div>";
+
+	document.getElementById('div-avisos').appendChild(div);
+}
+
+</script>

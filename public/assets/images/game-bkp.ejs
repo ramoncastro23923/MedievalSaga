@@ -1,0 +1,2175 @@
+<html>
+<head>
+<title>Scrum 3D Park</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="shortcut icon" href="/imagens/favicon.ico" type="image/x-icon" />
+<link href='../../assets/css/dragula.css' rel='stylesheet' type='text/css' />
+
+<style> 
+
+#animado {
+    /* background: #008; */
+    position: absolute;
+    /* width: 400px;
+	height: 0px; */
+	left: 100px;
+	top: 2px;
+	text-align: center;
+    /* border: 1px solid #00f; */
+}
+
+.texto-animado {
+  font-size: 92px;
+  color: #fff;
+  text-align: center;
+}
+
+.posicao-sm {
+	z-index:30;
+	padding-top: 10px;
+	padding-left: 10px;
+	position: absolute;
+}
+
+.posicao-po {
+	z-index:20;
+	padding-top: 240px;
+	padding-left: 10px;
+	position: absolute;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.modal-container {
+	width: 360px;
+	margin-left: 10px;
+	margin-right: 10px;
+	text-align: left;
+}
+.modal-container-maior {
+	width: 390px;
+}
+
+.modal-content-menor {
+	background-color: #fefefe;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 30%;
+	border-radius: 10px;
+}
+
+.texto-alerta {
+	width: 280px;
+}
+
+.texto-alerta-daily {
+	width: 550px;
+}
+
+.texto-alerta-retro {
+	width: 650px;
+}
+
+.texto-mensagem-objetivo {
+	width: 520px;
+	padding-left: 160px;
+	padding-bottom: 10px;
+	text-align: left;
+	font-size: 25px;
+}
+
+.texto-mensagem-papeis {
+	width: 600px;
+	padding-left: 160px;
+	padding-bottom: 10px;
+	text-align: left;
+	font-size: 25px;
+}
+
+.texto-mensagem-planning {
+	width: 520px;
+	padding-left: 135px;
+	padding-bottom: 10px;
+	text-align: left;
+	font-size: 25px;
+}
+
+.texto-mensagem-daily {
+	width: 420px;
+	padding-right: 100px;
+	padding-bottom: 20px;
+	text-align: left;
+	font-size: 25px;
+}
+
+.texto-mensagem-retro {
+	width: 490px;
+	padding-right: 130px;
+	padding-bottom: 20px;
+	text-align: left;
+	font-size: 25px;
+}
+
+.modal-content-alerta {
+	padding-top: 150px;
+	background-image: url(/imagens/game/fundo-mensagem-alerta.png);
+	background-repeat: no-repeat;
+	height: 340px;
+	width: 390px;
+	align-content: center;
+}
+
+.modal-content-objetivo {
+	padding-top: 4px;
+	background-image: url(/imagens/game/fundo-mensagem-objetivo.png);
+	background-repeat: no-repeat;
+	height: 536px;
+	width: 837px;
+	padding-top: 100px;
+	align-content: center;
+}
+
+.modal-content-papeis {
+	padding-top: 4px;
+	background-image: url(/imagens/game/fundo-mensagem-papeis.png);
+	background-repeat: no-repeat;
+	height: 536px;
+	width: 837px;
+	padding-top: 100px;
+	align-content: center;
+}
+
+.modal-content-papeis-po {
+	background-image: url(/imagens/game/fundo-mensagem-papeis-po.png);
+	background-repeat: no-repeat;
+}
+
+.modal-content-planning {
+	padding-top: 4px;
+	background-image: url(/imagens/game/fundo-mensagem-planning.png);
+	background-repeat: no-repeat;
+	height: 450px;
+	width: 789px;
+	padding-top: 200px;
+	align-content: right;
+}
+
+.modal-content-daily {
+	padding-top: 4px;
+	background-image: url(/imagens/game/fundo-mensagem-daily.png);
+	background-repeat: no-repeat;
+	height: 500px;
+	width: 934px;
+	padding-top: 110px;
+	align-content: center;
+}
+
+.modal-content-retro {
+	padding-top: 4px;
+	background-image: url(/imagens/game/fundo-mensagem-retrospective.png);
+	background-repeat: no-repeat;
+	height: 450px;
+	width: 850px;
+	padding-top: 200px;
+	align-content: center;
+}
+
+.container {
+	z-index: 400;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.appearance-select{
+   -webkit-appearance: none;  /* Remove estilo padrão do Chrome */
+   -moz-appearance: none; /* Remove estilo padrão do FireFox */
+   appearance: none; /* Remove estilo padrão do FireFox*/
+   background: url(/imagens/edicao/ico-seta-appearance.gif) no-repeat #eeeeee; /* Imagem de fundo (Seta) */
+   background-position: 30px center;  /*Posição da imagem do background*/
+   width: 60px; /* Tamanho do select, maior que o tamanho da div "div-select" */
+   height:22px; /* Altura do select, importante para que tenha a mesma altura em todo os navegadores */
+   border:1px solid #4F4F4F;
+   margin: 1px;
+   font-size: 14px;
+   
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 200; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+  }
+  
+.modal-mensagens {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 200; /* Sit on top */
+    padding-top: 10px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+  }
+
+
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 92%;
+	border-radius: 10px;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
+.titulos {
+  font-size: 32px;
+}
+
+.titulos-mensagens {
+  font-size: 24px;
+}
+
+.posicao-pecas {
+	left: 60%;
+}
+
+.nomes {
+  font-size: 24px;
+}
+
+.texto-input {
+  border-radius: 8px;
+  border-color: #D3D3D3;
+  background: #fff;/*#DCDCDC;*/
+  padding: 14px; 
+  width: 360px;
+  text-align: center;
+  font-size: 14px;
+  text-align: left;
+}
+
+.box {
+    font-size: 28px;
+    padding: 2px;
+	padding-top: 24px;
+    text-align: center;
+	font-family: "RegencyScriptFLF Regular";
+}
+
+.box-texto {
+    font-size: 32px;
+	padding-top: 0px;
+    text-align: center;
+	vertical-align: center;
+	font-family: "RegencyScriptFLF Regular";
+}
+
+.texto-regras-vermelho {
+    color: red;
+	font-weight: bold;
+}
+
+.texto-regras-azul {
+    color: blue;
+	font-weight: bold;
+}
+
+a:link, a:visited {
+	text-decoration: none;
+	color: #000
+	}
+a:hover {
+	text-decoration: none; 
+	color: #663300
+	}
+a:active {
+	text-decoration: none
+	}
+
+.ir-topo-texto {
+    font-size: 24px;
+	padding-top: 0px;
+    text-align: center;
+	vertical-align: center;
+	font-family: "RegencyScriptFLF Regular";
+}
+
+.box-texto-info {
+    font-size: 24px;
+	padding-left: 0px;
+    text-align: center;
+	font-family: "RegencyScriptFLF Regular";
+	/* font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif; */
+	font-weight: bold;
+}
+
+.cor_totais {
+	color: #0099cc;
+}
+
+
+
+.cor_relogio {
+	color: #ffffff;
+	text-align: center;
+}
+
+@font-face {
+	font-family: "RegencyScriptFLF Regular";
+	src: url("/fonts/Burbank-Big-Condensed Black.ttf");
+}
+
+.font { font-family: "RegencyScriptFLF Regular"; }
+
+
+    .dstyle
+    {
+        position: absolute;
+		cursor: move;
+    }
+	.selected {
+		border: 1px solid yellowgreen;
+		
+	}
+	.tamanho-img {
+		max-height: 100%;
+		max-width: 100%;
+	}
+
+	.div-historias {
+		width: 100%;
+		height: 550px;
+		margin: 0 auto;
+		/*border: 1px solid red;*/
+		background-repeat: no-repeat;
+		background-size: 73%;
+		background-position: center;
+	}
+
+	.div-ir-topo {
+		max-height: 30px;
+		padding-left: 125px;
+		z-index: 110;
+	}
+
+	.div-card {
+		width: 100%;
+		max-height: 550px;
+		padding-top: 6px;
+		padding-left: 10px;
+		z-index: 100;
+	}
+
+
+	/* kanban */
+	
+.droptarget {
+  float: left; 
+  width: 185px; 
+  height: 470px;
+  /* padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: 5px solid rgb(241, 239, 239);
+  border-radius:         5px;
+  box-shadow: 3px 3px 5px rgba(0,0,0,.2); */
+  background: #ebecf0;
+  overflow:auto;/* rolagem na coluna do kanban */
+}
+.div-text {
+  float: left; 
+  width: 160px; 
+  height: 120px;
+  margin: 15px;
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+}
+.colunas{
+	height: 500px;
+	width: 180px;
+	padding-left: 18px;
+	background-color: #ebecf0;
+	border-radius: 4px;
+	box-shadow: 3px 3px 5px rgba(0,0,0,.2);
+	margin: 4px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+.label{
+	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+	font-weight: bold;
+}
+.font-cards {
+	font-size: 13px;
+}
+.textarea-text {
+	border:none; 
+	background: transparent; 
+	outline: 0; 
+	width: 150px; 
+	height: 50px;
+	overflow: auto;
+	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+}
+.card {
+    position: relative;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+    width: 150px;
+    min-height: 50px;
+    padding: 7px;
+
+    background: #FC3;
+    border: 1px solid #FD5;
+
+    -moz-border-radius:    5px;
+    -webkit-border-radius: 5px;
+    border-radius:         5px;
+
+    -moz-box-shadow:    3px 3px 5px rgba(0,0,0,.2);
+    -webkit-box-shadow: 3px 3px 5px rgba(0,0,0,.2);
+    box-shadow:         3px 3px 5px rgba(0,0,0,.2);
+
+    cursor: url(grab.cur);
+    cursor: -moz-grab;
+
+	
+}
+
+.yellow { background: #FC3; border-color: #FD5 } /*-- yellow is default */
+.orange { background: #F91; border-color: #FA3 }
+.blue   { background: #8DCCE0; border-color: #82C5F0 }
+.red    { background: #EB7565; border-color: #E54 }
+.green  { background: #4DF780; border-color: #9D6 }
+
+div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 100;
+}
+
+.rcorners {
+  border-radius: 12px;
+  border: 4px solid #DEC9AE;
+  background: #E8DED4;
+  margin-bottom: 4px;
+  width: 92%;
+  height: 100%px;
+}
+
+input[type="radio"] {
+			-webkit-appearance: none;
+			width: 90px;
+			height: 90px;
+			border: none;
+			cursor: pointer;
+			transition: border .2s ease;
+			filter: grayscale(100%);
+			margin: 0 5px;
+			transition: all .2s ease;
+}
+
+input[type="radio"]:hover, input[type="radio"]:checked {
+	filter:	grayscale(0);
+}
+			
+input[type="radio"]:focus {
+	outline: 0;
+}
+
+/* Custom radio buttons */
+.neutral {
+	background: url('../../assets/images/neutral_t3q8hz.svg') center;
+	background-size: cover;
+}
+.sad {
+	background: url('../../assets/images/sad_bj1tuj.svg') center;
+	background-size: cover;
+}
+
+.happy {
+	background: url('../../assets/images/happy_ampvnc.svg') center;
+	background-size: cover;
+}
+
+
+
+.mtt {
+	position: fixed;
+	bottom: 10px;
+	right: 20px;
+	color: #999;
+	text-decoration: none;
+	
+	span {
+		color: #e74c3c;
+	}
+	
+	&:hover {
+		color: #666;
+
+		span {
+			color: #c0392b;
+		}
+	}
+}
+
+.button {
+  background-color: #008CBA; /* blue */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.postit {
+  line-height: 1;
+  text-align:center;     
+  width: 130px;    
+  margin: 2px;    
+  min-height:60px;
+  max-height:60px;
+  padding-top:4px;
+  margin-bottom: 8px;
+  position:relative;   
+  border:1px solid #FD5;  
+  border-top:6px solid #FC3;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif; 
+  /* font-size:22px;       */
+  border-bottom-right-radius: 60px 5px;
+  display:inline-block;    
+   background: #FC3; /* Old browsers */
+background: -moz-linear-gradient(-45deg, #FC3 81%, #FC3 82%, #FC3 82%, #ffffc6 100%); /* FF3.6+ */
+/* background: -webkit-gradient(linear, left top, right bottom, color-stop(81%,#FC3), color-stop(82%,#FC3), color-stop(82%,#FC3), color-stop(100%,#ffffc6)); Chrome,Safari4+ */
+background: -webkit-linear-gradient(-45deg, #FC3 81%,#FC3 82%,#FC3 82%,#ffffc6 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(-45deg, #FC3 81%,#FC3 82%,#FC3 82%,#ffffc6 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(-45deg, #FC3 81%,#FC3 82%,#FC3 82%,#ffffc6 100%); /* IE10+ */
+background: linear-gradient(135deg, #FC3 81%,#FC3 82%,#FC3 82%,#ffffc6 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FC3', endColorstr='#ffffc6',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+box-shadow:4px 4px 8px #999;
+
+}
+
+
+</style>
+<link rel="stylesheet" href="/css/style.css" media="screen"/>
+<script src="/js/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="/js/ui/1.10.0/jquery-ui.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/jquery.event.drag-2.2.js"></script>
+<script src='https://bevacqua.github.io/dragula/dist/dragula.js'></script>
+
+<script>
+	jQuery(window).load(function() {	
+		//Após a leitura da pagina o evento fadeOut do loader é acionado, esta com delay para ser perceptivo em ambiente fora do servidor.
+		jQuery("#loader").delay(2000).fadeOut("slow");
+
+		$("html, body").animate({ scrollTop: 0 }, "slow", function() {
+			
+			var millisecondsToWait = 1000;
+	
+			setTimeout(function() {
+				abrirModalObjetivo();
+			}, millisecondsToWait);
+
+			return false;
+		});
+
+  		
+	});
+
+var App = {};
+
+</script>
+
+<% var quantidade_dias = 20; %>
+
+</head>
+<body style="background-image: url(https://i.pinimg.com/550x/d6/21/d5/d621d5fc76f82b1f5e7db8fe0a5b047b.jpg);" onload="location.href='#loader'" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+
+<div id="content">
+<div id="loader"></div>
+
+<div class="sticky">
+
+
+<div align="center" id="alerta-animado"></div>
+<div class="font texto-animado" id="animado"></div>
+
+<table id="Tabela_01" width="1291" height="88" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="115" height="28"></td>
+		<td id="div_dia" class="box cor_totais font" background="/imagens/game/div-dia.png" width="111" height="88" rowspan="5"></td>
+		<td id="div_total_dia" class="box cor_totais font" background="/imagens/game/div-pontos-dia.png" width="135" height="88" rowspan="5"></td>
+		<td id="div_total_geral" class="box cor_totais font" background="/imagens/game/div-pontos-geral.png" width="153" height="88" rowspan="5"></td>
+		<td id="div_roi_total" class="box cor_totais font" style="padding-left:10px;background-image: url(/imagens/game/div-total-financeiro.png);background-repeat: no-repeat;" width="140" height="88" rowspan="5"></td>
+		<td rowspan="2">
+			<a href="#" onclick="abrirModal()"
+				onmouseover="window.status='Abrir Regras';  return true;"
+				onmouseout="window.status='';  return true;">
+				<img src="/imagens/game/btn-regras.png" width="150" height="59" border="0" alt=""></a></td>
+		<td rowspan="2">
+			<a href="#" onClick="post('/home/retro', {time_email: '<%=time_email%>', codigo_jogo: '<%=codigo_jogo %>', nova_janela: 'true'})" 
+				onmouseover="window.status='Abrir tela de Retrospectiva';  return true;">
+				<img src="/imagens/game/btn-retro.png" width="150" height="59" border="0" alt=""></a></td>
+		<td rowspan="2">
+			<a href="#" onClick="post('/game/charts', {time_email: '<%=time_email%>', codigo_jogo: '<%=codigo_jogo %>', nova_janela: 'true'})" 
+				onmouseover="window.status='Abrir tela de Métricas';  return true;">
+				<img src="/imagens/game/btn-metricas.png" width="153" height="59" border="0" alt=""></a></td>
+		<td id="div_relogio" class="font box-texto" style="padding-left:10px;background-image: url(/imagens/game/div-tempo.png);background-repeat: no-repeat;" width="183" height="59" rowspan="2"></td>
+		<td width="1" height="28"></td>
+	</tr>
+	<tr>
+		<td class="box-texto" rowspan="2" width="115" height="42"><a href="#" onClick="abrirModalAval()">Time <%=time_email%></a></td>
+		<td width="1" height="31"></td> 
+	</tr>
+	<tr>
+		<td class="box-texto-info" id="info1" colspan="4" width="636" height="28" rowspan="2"></td>
+		<td>
+			<img src="/imagens/game/spacer.gif" width="1" height="11" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="2">
+			<img src="/imagens/game/game_12.jpg" width="115" height="18" alt=""></td>
+		<td>
+			<img src="/imagens/game/spacer.gif" width="1" height="17" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<img src="/imagens/game/game_13.jpg" width="636" height="1" alt=""></td>
+		<td>
+			<img src="/imagens/game/spacer.gif" width="1" height="1" alt=""></td>
+	</tr>
+</table>
+</div>
+
+
+<div class="posicao-sm" id="btn-sm">
+	<a href="#" onclick="abrirModalSM()">
+		<img src="/imagens/game/botao-sm.png" width="52" height="231" border="0" alt="">
+	</a>
+</div>
+<div class="posicao-po" id="btn-po">
+	<a href="#" onclick="abrirModalPO()">
+		<img src="/imagens/game/botao-po.png" width="52" height="231" border="0" alt="">
+	</a>
+</div>
+
+
+
+<% 
+var top_imagens = 0; 
+%>
+
+<div id="modal_aval" class="modal">
+	<div class="modal-content-menor" id="div-avaliacoes">
+		<span id="modal-aval" class="close">&times;</span>
+	</div>
+</div>
+
+<div id="modal_pena" class="modal" align="center">
+	<div class="modal-content-alerta" id="div-penalidades">
+		<!-- <span id="modal-penalidades" class="close">&times;</span> -->
+	</div>
+</div>
+
+<div id="modal_objetivo" class="modal-mensagens" align="center">
+	<div class="modal-content-objetivo" id="div-instr-objetivo">
+	</div>
+</div>
+
+<div id="modal_sm" class="modal-mensagens" align="center">
+	<div class="modal-content-papeis" id="div-instr-sm">
+	</div>
+</div>
+
+<div id="modal_po" class="modal-mensagens" align="center">
+	<div class="modal-content-papeis modal-content-papeis-po" id="div-instr-po">
+	</div>
+</div>
+
+<div id="modal_planning" class="modal-mensagens" align="center">
+	<div class="modal-content-planning" id="div-instr-planning">
+	</div>
+</div>
+
+<div id="modal_daily" class="modal-mensagens" align="center">
+	<div class="modal-content-daily" id="div-instr-daily">
+	</div>
+</div>
+
+<div id="modal_retro" class="modal-mensagens" align="center">
+	<div class="modal-content-retro" id="div-instr-retro">
+	</div>
+</div>
+
+<!-- The Modal -->
+<div id="modal_times" class="modal">
+
+<!-- Modal content -->
+<div class="modal-content">
+	<span id="close-regras" class="close">&times;</span>
+	<div class="container cor_totais font titulos">Regras</div>
+
+		<div class="container" align="center">
+		  <div class="modal-container  modal-container-maior" class="font-cards">
+			<b>Objetivo</b><br>
+	
+			<br>
+			<br>
+			<b>Regras gerais</b><br>
+			1. Utilizar colunas <span class="texto-regras-vermelho">Sprint Backlog</span>, <span class="texto-regras-vermelho">Fazer</span>, <span class="texto-regras-vermelho">Fazendo</span> e <span class="texto-regras-vermelho">Pronto</span> do quadro kanban;<br>
+			Regras são diretrizes estabelecidas para orientar o comportamento e as ações das pessoas em um sistema, organização ou sociedade, visando promover ordem, justiça e convivência harmoniosa. Elas definem padrões de conduta e consequências para o descumprimento, contribuindo para a regulamentação e governança de diferentes contextos.
+			1. Utilizar colunas <span class="texto-regras-vermelho">Sprint Backlog</span>, <span class="texto-regras-vermelho">Fazer</span>, <span class="texto-regras-vermelho">Fazendo</span> e <span class="texto-regras-vermelho">Pronto</span> do quadro kanban;<br>
+			2. Cada time possuirá um Product Owner (PO) e um Srum Master (SM) representados respectivamente como o Sábio e o Imperador (ou rei);<br>
+			3. Cada <span class="texto-regras-vermelho">Sprint possuirá 1 semana</span> 
+			4. O Scrum Master é o responsável por tirar dúvidas e garantir que o seu Time mantenha o foco na entrega de valor durante todo o jogo;<br>
+					 
+
+
+
+
+
+		
+		
+		</div>
+		  <div class="modal-container modal-container-maior">
+			<b>Sprint Planning</b><br>
+	
+			Um time <span class="texto-regras-vermelho">poderá pegar mais de um quebra-cabeças</span> para montar por Sprint, isto fica à <span class="texto-regras-vermelho">critério do PO e Time</span>;<br>
+			O PO deverá definir junto com o Time uma meta para a Sprint e escrever no chat da Facilitação principal. (Ex.: Meta Time 1 - montar 1 dinossauro de 29 peças + 2 aviões);<br>
+			O Scrum Master deve garantir que o Time escolheu as histórias para a Sprint e migrou da coluna "Backlog" para a coluna "Sprint Backlog" do quadro kanban.<br><br>
+	
+			<b>Daily</b><br>
+	
+			O Time decidirá como aplicará os pontos sorteados, visando atender a meta da Sprint;<br>
+			O Scrum Master deve garantir que o Time converse sobre como atingir a meta e buscar resolver qualquer impedimento que os impeça de alcançar este objetivo.<br>
+			<br>
+	
+			<b>Execução</b><br>
+	
+			<span class="texto-regras-vermelho">Cada dia terá uma pontuação sorteada e este será o número máximo de peças a ser montado pelo Time naquele dia</span>;</br>
+			<span class="texto-regras-azul">Ao iniciar o primeiro dia da Sprint</span>, todas <span class="texto-regras-azul"></span>as histórias da coluna Sprint Backlog</span> devem ser <span class="texto-regras-azul">movimentadas para a coluna Fazer</span>;</br>
+			A estória que estiver sendo montada deve ser movimentada para a coluna Fazendo;</br>
+			Se uma estória estiver sendo montada e não estiver no quadro kanban, o Time receberá multa;</br>
+			O PO poderá trazer histórias adicionais durante as Sprints, mas precisa negociar com o Time;</br>
+			As histórias concluídas devem ser movidas da coluna Fazendo para a coluna Pronto pelo PO, pois isso confirma que ele realmente está de acordo com o que foi entregue.</br></br>
+	
+		  </div>
+		  <div class="modal-container">
+			<b>Refinamento</b></br>
+			O PO pode pedir ajuda do Time durante a execução da Sprint para priorizar histórias.<br>
+			As histórias priorizadas devem ser organizadas na coluna "Sprint Backlog" de cima para baixo no quadro kanban, de acordo com a sua importância.<br><br>
+	
+			<b>Sprint Review</b><br>
+			O PO do Time apresenta o que lhe foi entregue durante a Sprint ao Cliente (facilitador geral) e qual o valor das entregas. <br>
+			O PO informa se obtiveram sucesso na meta estabelecida e fala o que planeja para as próximas entregas.<br><br>
+	
+			<b>Sprint Retrospective</b><br>
+			O Time, PO e Scrum Master devem informar os pontos positivos, melhorias e planos de ações no quadro da tela de "Retrospectivas".<br><br>
+	
+			<b>Publicação/Produção</b><br>
+			Em cada nova Sprint, no seu segundo dia podemos ter uma entrega em Produção, o que comprometerá a pontuação de um dos membros do Time, de acordo com o sorteio, ou seja, esta pessoa ficará numa atividade fora da sprint.<br><br>
+	
+			<b>Monitoramento/Pós-Produção</b><br>
+			Um dia depois da entrada em Produção dos produtos entregues, será sorteado se ocorreu ou não um incidente, que de acordo com um sorteio, terão os Times penalizados ou não.<br>
+		  </div>
+		</div>
+	
+
+</div>
+
+</div>
+
+<div id="div-inicio-tempo"></div>
+<div id="div-fim-tempo"></div>
+
+
+<!-- 
+<div id="kanban" class="div-historias" align="center">
+<table>
+	<tr>
+		
+		<td>
+			<div id="div-backlog" align="center" class="droptarget"><label class="label">Product Backlog<br></label></div>
+		</td>
+		
+		<td>
+			<div id="div-sprint-backlog" align="center" class="droptarget"><label class="label">Sprint Backlog</label></div>
+		</td>
+		<td>
+			<div id="div-fazer" align="center" class="droptarget"><label class="label">Fazer</label></div>
+		</td>
+		<td>
+			<div id="div-fazendo" align="center" class="droptarget"><label class="label">Fazendo</label></div>
+		</td>
+		<td>
+			<div id="div-feito" align="center" class="droptarget"><label class="label">Pronto</label></div>
+		</td>
+	</tr>	
+</table>
+</div> -->
+
+<div id="kanban2" class="div-historias" align="center">
+	<table>
+		<tr>
+			
+			<td>
+				<div class="colunas">
+					<label class="label">Product Backlog</label>
+					<div id="div-backlog" align="center" class="droptarget"></div>
+				</div>
+			</td>
+			
+			<td>
+				<div class="colunas">
+					<label class="label">Sprint Backlog</label>
+					<div id="div-sprint-backlog" align="center" class="droptarget"></div>
+				</div>
+			</td>
+			<td>
+				<div class="colunas">
+					<label class="label">Fazer</label>
+					<div id="div-fazer" align="center" class="droptarget"></div>
+				</div>
+			</td>
+			<td>
+				<div class="colunas">
+					<label class="label">Fazendo</label>
+					<div id="div-fazendo" align="center" class="droptarget"></div>
+				</div>
+			</td>
+			<td>
+				<div class="colunas">
+					<label class="label">Pronto</label>
+					<div id="div-feito" align="center" class="droptarget"></div>
+				</div>
+			</td>
+		</tr>	
+	</table>
+</div>
+
+
+<% 
+var valueh = "";
+var keyh = "";
+var conta_top = 0;
+
+for(var i=0; i < arrayImagensHistorias.length; i++) { 
+	conta_top++;
+	if(conta_top == 10){
+		conta_top = 0;
+		top_imagens = top_imagens + 40;
+	}
+
+	top_imagens = top_imagens + 550;
+	keyh = 'h' + arrayImagensHistorias[i];	
+	valueh = mapImagensHistorias.get(keyh); %>
+	
+	<div id="<%=keyh%>" class="div-historias rcorners" >
+	<% for(var j=0; j < valueh.listaDeArquivos.length; j++) {%>
+		<div id="<%=codigo_jogo%>-<%=time_email%>-<%=keyh%>-<%=valueh.listaDeArquivos[j].replace('.png', '')%>" 
+			style="position: absolute;top:<%=(valueh.mapPosicoes.get(valueh.listaDeArquivos[j].replace('.png', '')).top)+top_imagens%>px;left:<%=valueh.mapPosicoes.get(valueh.listaDeArquivos[j].replace('.png', '')).left%>px;" class="dstyle posicao-pecas" >
+			<img src="/imagens/historias/<%=keyh%>/<%=valueh.listaDeArquivos[j]%>" class="tamanho-img"  alt="">
+		</div>
+	<%}%>
+		<div >
+			<div class="div-ir-topo">
+				<a href="#Tabela_01" class="font ir-topo-texto">Ir para o topo
+					<!-- <a href="#" onClick="contar()" class="font ir-topo-texto">Ir para o topo  -->
+					<img style="max-height: 30px;vertical-align: middle;" src="/imagens/game/ir-topo.png">
+				</a>
+			</div>
+			<div class="div-card">
+				<img style="max-height: 500px;" src="/imagens/historias/fundos/<%=keyh%>.jpg">
+			</div>
+		</div>
+
+	</div>
+	
+<%}%>	
+
+
+</div>
+
+
+
+</body>
+</html>
+
+
+<script>
+
+	connectSocket();
+	subscribe();
+	
+	
+	function connectSocket(){
+		App.socket = io.connect('<%=url_sistema%>');
+		console.log(new Date() + ' - Connected');
+	}
+
+	function subscribe(){
+		// passando o nome da sala, que neste momento sera por usuario logado
+		App.socket.emit('subscribe', '<%=codigo_jogo%>-<%=time_email%>');
+		console.log(new Date() + ' - subscribed');
+	}
+
+	window.setInterval('subscribe()', 300000);
+    
+	var roi_atual_time = 0;
+	
+	/**
+	* Inicio de texto alterado
+	*/
+	//metodo que carrega a tela atualizada entrar num jogo existente ou recarregar tela
+	function iniciar(){
+		
+		
+		App.socket.emit('carregar-controle', {
+			x: 0,
+			y: 0,
+			div_atualizar: '',
+			room: '<%=codigo_jogo%>-<%=time_email%>',
+			id_jogo: '<%=id_jogo%>'
+		});
+
+		var millisecondsToWait = 6000;
+	
+		setTimeout(function() {
+			// aqui devemos buscar as informações para recarregar todos os elementos da tela de forma dinamica
+			// devemos percorrer todas as divs e chamar o metodo novo do server que deve retornar todas as posicoes do jogo ate o momento. com
+			// isto podemos chamar o 'update_position' para desenhar na tela.
+			// devemos acumular um jsonArray com chave e valor para cada div e ao carregar o jogo, percorrer este array para pegar a posicao x e y de cada div.
+			// Desta forma, vamos atualizar somente peças ja mexidas, pois atualizamos este jsonarray somente quando mexemos pelo menos uma vez na div
+			App.socket.emit('carregar-jogo', {
+				x: 0,
+				y: 0,
+				div_atualizar: '',
+				room: '<%=codigo_jogo%>-<%=time_email%>',
+				id_jogo: '<%=id_jogo%>'
+			});
+			
+		}, millisecondsToWait);
+
+	}
+	
+	iniciar();
+
+	// carregarHistorias();
+	carregarHistoriasKanban();
+
+	var dia_corrente = 0;
+
+	// instrucoes objetivo
+	var modal_objetivo = document.getElementById("modal_objetivo");
+
+	// var span_pena = document.getElementsByClassName("close")[1];
+
+	function abrirModalObjetivo(){
+		
+
+		modal_objetivo.style.display = "block";
+
+		$( "div" ).remove( "#div-objetivo" );
+
+		const div = document.createElement('div');
+		div.innerHTML = "<div id='div-objetivo'><div class='container box font'>"
+			+"<span class='texto-alerta titulos'>Objetivo</span></br></br>"
+			+"<span class='texto-mensagem-objetivo'>Montar um parque de dinossauros, vender ingressos e gerar o maior ROI.</br>"
+				+"O Time deve montar quebra-cabeças de dinossauros e passeios para ganhar dinheiro quando concluídos.</br>"
+				+"</span><span class='texto-mensagem-objetivo texto-regras-vermelho'>Atenção: </span><span class='texto-mensagem-objetivo'>Os passeios somente vão gerar dinheiro a partir do dia 6.</span></div><br>" 
+
+		+"<div class='container'> "
+		+"	<button class='button' type='button'  onClick='fecharModalObjetivo()''>Fechar</button> "
+		+"</div></div>";
+
+
+		document.getElementById('div-instr-objetivo').appendChild(div);
+
+	}
+	
+	function fecharModalObjetivo(){
+		modal_objetivo.style.display = "none";
+	}
+
+	// instrucoes sm
+	var modal_sm = document.getElementById("modal_sm");
+
+	function abrirModalSM(){
+		
+
+		modal_sm.style.display = "block";
+
+		$( "div" ).remove( "#div-sm" );
+
+		const div = document.createElement('div');
+		div.innerHTML = "<div id='div-sm'><div class='container box font'>"
+			+"<span class='texto-alerta titulos'>Scrum Master</span></br></br>"
+			+"<span class='texto-mensagem-papeis'>Deve ser um líder servidor e resolver problemas/impedimentos que impeçam o Time de alcançar seus objetivos.</br>"
+				+"Deve garantir que a comunicação e colaboração ocorram. </br> "
+				+"Deve dominar as regras do Jogo para impedir que o Time seja penalizado e ajudar na interpretação das métricas.</br>"
+				+"Deve garantir que o Time está realizando as cerimonias da melhor forma e que estejam realizando a melhoria contínua nas Sprints.</br></span>"
+
+		+"<div class='container'> "
+		+"	<button class='button' type='button'  onClick='fecharModalSM()''>Fechar</button> "
+		+"</div></div>";
+
+
+		document.getElementById('div-instr-sm').appendChild(div);
+
+	}
+	
+	function fecharModalSM(){
+		modal_sm.style.display = "none";
+	}
+
+	// instrucoes po
+	var modal_po = document.getElementById("modal_po");
+
+	function abrirModalPO(){
+		
+
+		modal_po.style.display = "block";
+
+		$( "div" ).remove( "#div-po" );
+
+		const div = document.createElement('div');
+		div.innerHTML = "<div id='div-po'><div class='container box font'>"
+			+"<span class='texto-alerta titulos'>Product Owner</span></br></br>"
+			+"<span class='texto-mensagem-papeis'>É o único responsável pelo Backlog do Produto e deve garantir o maior ROI para o Produto.</br>"
+				+"Deve manter a coluna <span class='texto-regras-vermelho'>Sprint Backlog</span> sempre abastecida "
+				+"com Histórias priorizadas que gerem o melhor retorno do investimento. </br> "
+				+"Deve ouvir o Time no momento da priorização das histórias para entender melhor qual a complexidade e viabilidade técnica, "
+				+"para assim tomar melhores decisões na evolução do Produto.</br></span>"
+
+		+"<div class='container'> "
+		+"	<button class='button' type='button'  onClick='fecharModalPO()''>Fechar</button> "
+		+"</div></div>";
+
+
+		document.getElementById('div-instr-po').appendChild(div);
+
+	}
+	
+	function fecharModalPO(){
+		modal_po.style.display = "none";
+	}
+
+
+
+
+	// abrirModalObjetivo();
+
+	//var audio_regressivo = new Audio('/audio/30-segundos.mp3');
+	
+	App.socket.on('update_position', function (data) {
+		//console.log('Key: ' + data.x);
+		
+        var x = data.x;
+		var y = data.y;
+
+		// jquery code to move div here
+		
+		$("#left").val(x);
+		$("#top").val(y);
+		
+		//console.log('Atualizar css client: ' + "#" + data.div_atualizar);
+
+		$("#" + data.div_atualizar).css({
+			left: x + "px",
+			top: y + "px"
+		});
+		
+	});
+
+	App.socket.on('update_position_kanban', function (data) {
+
+		//console.log('Y: ' + data.x);
+		//console.log('X: ' + data.y);
+		//console.log('Div_atualizar: ' + data.div_atualizar);
+		
+        //var x = data.x;
+		//var y = data.y;
+
+		// jquery code to move div here
+		
+		//$("#left").val(x);
+		//$("#top").val(y);
+		
+		//console.log('Atualizar css client: ' + "#" + data.div_atualizar);
+		var node = document.createElement("DIV"); 
+		var textnode = document.getElementById(data.div_atualizar);         // Create a text node
+		node.appendChild(textnode);                              // Append the text to <li>
+		document.getElementById(data.div_destino).appendChild(node);
+		
+		/*$("#" + data.div_atualizar).css({
+			//left: x + "px",
+			//top: y + "px"
+		});*/
+
+
+		/*$("#" + data.div_atualizar).css({
+			left: x + "px",
+			top: y + "px"
+		});*/
+
+	});
+
+	App.socket.on('update_position_kanban_new', function (data) {	
+		// somente atualizo a etapa caso tenha trocado de coluna
+		if(data.target !== data.source){		
+			document.getElementById(data.target).innerHTML = data.target_value.replace(' gu-transit', '');
+		}
+
+		document.getElementById(data.source).innerHTML = data.source_value.replace(' gu-transit', '');
+	});
+
+
+	App.socket.on('update_tempo', function (data) {
+		// chamo a funcao que inicia a contagem de tempo da tela
+		iniciarTempo(data.tempo_adicional);
+	});
+	
+	App.socket.on('update_control', function (data) {
+
+		console.log('Chegou aqui');
+		
+		// atualiza o total de pontos do dia
+		element = document.getElementById('div_dia');
+		element.innerHTML = data.dia;
+
+		// atualizo o dia_corrente
+		dia_corrente = data.dia;
+
+		element = document.getElementById('div_total_dia');
+		element.innerHTML = data.pontos_dia;
+
+		element = document.getElementById('div_total_geral');
+		element.innerHTML = data.pontos_geral;
+
+		element = document.getElementById('info1');
+		element.innerHTML = data.info1 + (data.info3 !== '' ? ' - ' + data.info3 : '');
+
+		element = document.getElementById('div_roi_total');
+		var roi = 0;
+		
+
+		if(typeof data.roi_total !== 'undefined'){
+			roi = data.roi_total;
+			roi_atual_time = roi;
+		}
+
+		element.innerHTML = "$ " + roi;
+
+
+
+		
+
+		//element = document.getElementById('info2');
+		//element.innerHTML = data.info2;
+
+		// element = document.getElementById('info3');
+		// element.innerHTML = data.info3;
+	
+	});
+
+	App.socket.on('update_control_evento', function (data) {
+
+		element = document.getElementById('info1');
+		element.innerHTML = data.info1;
+	});
+
+	App.socket.on('solicitar_aval', function (data) {
+		abrirModalAval();
+	});
+
+	App.socket.on('update_financeiro', function (data) {
+
+		console.log('Update fin ');
+		var roi_dia = 0;
+
+		console.log('1. data.roi_total: ' + data.roi_total);
+		console.log('2. roi_atual_time: ' + roi_atual_time);
+
+		if( data.roi_total > 0 ) {
+			roi_dia = data.roi_total - roi_atual_time;
+		} 
+
+		console.log('3. roi_dia: ' + roi_dia);
+
+		// atualiza o total roi deste time ate o momento
+		element = document.getElementById('div_roi_total');
+		element.innerHTML = "$ " + data.roi_total;
+
+		roi_atual_time = data.roi_total;
+
+		// animated
+		if(roi_dia > 0){
+			//document.getElementById("animado").style.backgroundImage = "url('/imagens/game/fundo-mensagem-roi.png')";
+			
+			element = document.getElementById('animado');
+			//element.style.backgroundImage = "url('/imagens/game/fundo-mensagem-roi.png')";
+			element.innerHTML = '+' + roi_dia;
+
+			$("#animado").css("background-image", "url(/imagens/game/fundo-mensagem-roi.png)");
+			$("#animado").css("background-repeat", "no-repeat");
+			$("#animado").css("background-position", "center");
+			$("#animado").css("padding-top", "450px");
+
+			// jQuery('#main').css('opacity', '0');
+			jQuery('#animado').css('height', '415px');
+			jQuery('#animado').css('width', '490px');
+
+			$("#animado").animate({opacity: 1}, 2000, function() {
+
+				var millisecondsToWait = 2000;
+				setTimeout(function() {
+					$("#animado").animate({ opacity: 0 }, 2000, function () {
+						$(this).css('width', '0px');
+					})
+				}, millisecondsToWait);				
+			});
+		}
+
+		console.log('Roi: ' + data.roi_total);
+	});
+
+	
+	
+	$(".dstyle").draggable({
+		containment: "parent",
+        drag: function (event, ui) {
+
+			var info1 = document.getElementById("info1").innerHTML; 
+
+			if(! info1.includes("Execu")){
+				abrirModalMensagem('Este não é o momento para montar peças!');
+				return false;
+			}
+			else{
+
+			var coord = $(this).position();
+
+			var nome_div_atualizar = this.id;
+
+			//console.log('div_atualizar: ' + $(this).closest("div").attr("id"));
+
+			// console.log('div_atualizar 2: ' + $(this).parent().attr("id") );
+			
+			App.socket.emit('receive_positions', {
+					x: coord.left,
+					y: coord.top,
+					altura: $(this).height(),
+					largura: $(this).width(),
+					div_atualizar: nome_div_atualizar,
+					room: '<%=codigo_jogo%>-<%=time_email%>'
+				});
+			}
+		}
+	  }).dblclick(function(e) {
+
+		//alert('oi');
+		//$( this ).toggleClass("selected");
+
+	});
+	
+	jQuery(function($){
+	$('.dstyle')
+		.click(function(){
+			//$( this ).toggleClass("selected");
+		})
+		.drag("init",function(){
+			if ( $( this ).is('.selected') )
+				return $('.selected');
+		})
+		/*.drag(function( ev, dd ){
+			$( this ).css({
+				top: dd.offsetY,
+				left: dd.offsetX
+			});
+			
+			var nome_div_atualizar = this.id;
+			//console.log('Vai chamar o server passando a div: ' + nome_div_atualizar);
+	
+			App.socket.emit('receive_positions', {
+				x: coord.left,
+				y: coord.top,
+				div_atualizar: nome_div_atualizar,
+				room: '<%=codigo_jogo%>-<%=time_email%>'
+			});
+		});*/
+	});
+
+	/**
+	* Fim de texto alterado
+	*/
+
+var interval = null;
+
+var mapMensagemPlanning = new Map();
+var mapMensagemDaily = new Map();
+var mapMensagemRetro = new Map();
+
+function iniciarTempo(tempo_adicional){
+
+	var info1 = document.getElementById("info1").innerHTML; 
+
+	if(info1.includes("Reuni") && !mapMensagemDaily.get(dia_corrente) && dia_corrente < 5 && tempo_adicional > 0){
+		mapMensagemDaily.set(dia_corrente, 1);
+		abrirModalDaily();
+	}
+
+	if(info1.includes("Planning") && !mapMensagemPlanning.get(dia_corrente) && dia_corrente <= 6 && tempo_adicional > 0){
+		mapMensagemPlanning.set(dia_corrente, 1);
+		abrirModalPlanning();
+	}
+
+	if(info1.includes("Retro") && !mapMensagemRetro.get(dia_corrente) && dia_corrente < 11 && tempo_adicional > 0){
+		mapMensagemRetro.set(dia_corrente, 1);
+		abrirModalRetro();
+	}
+
+	var tempo = parseInt(tempo_adicional);
+
+	var dt1 = new Date();
+
+	dt1.setSeconds( dt1.getSeconds() + tempo );
+	var tempo = "";
+	var minuto_formatado = "";
+	var segundo_formatado = "";
+	//var info2_corrente = "";// vou usar para proximos eventos
+
+	// restaurando a cor do estilo da font
+	document.getElementById('div_relogio').style.color = "black";
+
+
+	if(interval != null){
+		clearInterval(interval);
+	}
+
+	//var tocou_inicio = false;
+
+	interval = setInterval( function() {
+
+		/*if(! tocou_inicio){
+			console.log("tocar inicio")
+			// dispara o som de inicio do tempo
+			var mp3Source1 = '<source src="/audio/inicio-tempo.mp3" type="audio/mpeg">';
+			document.getElementById("div-inicio-tempo").innerHTML='<audio autoplay="autoplay">' + mp3Source1 + '</audio>';
+			tocou_inicio = true;
+		}*/
+
+		var current_date1 = new Date().getTime();
+		var segundos_f1 = (dt1 - current_date1) / 1000;
+		var minutos1 = parseInt(segundos_f1 / 60);
+		
+		segundos_f1 = parseInt(segundos_f1 % 60);
+
+		if(minutos1> 9){
+			minuto_formatado = minutos1;
+		}
+		else {
+			minuto_formatado = '0' + minutos1;
+		}
+
+		// o navegador bloqueia sons chamados automaticamente ***
+		// se segundos_f1 for igual a 30, disparo um alarme
+		//if (minutos1 == 0 && segundos_f1 == 30){
+			// disparar alarme de 30 segundos restantes
+			//audio_regressivo.play();
+		//}
+
+		if(segundos_f1 > 9){
+			segundo_formatado = segundos_f1;
+		}
+		else {
+			segundo_formatado = '0' + segundos_f1;
+		}
+
+		document.getElementById('div_relogio').innerHTML = minuto_formatado + ':' + segundo_formatado;
+
+		if(minutos1 == 0 && segundos_f1 == 0){
+			//console.log('zerou');
+			clearInterval(interval);
+			document.getElementById('div_relogio').style.color = "red";
+
+			if(tempo_adicional > 0){
+				$("#alerta-animado").css("background-image", "url(/imagens/game/fundo-mensagem-tempo.png)");
+				$("#alerta-animado").css("background-repeat", "no-repeat");
+				$("#alerta-animado").css("background-position", "center");
+				$("#alerta-animado").css("padding-top", "350px");
+				$("#alerta-animado").css("position", "absolute");
+
+				// jQuery('#main').css('opacity', '0');
+				jQuery('#alerta-animado').css('height', '415px');
+				jQuery('#alerta-animado').css('width', '1290px');
+				
+
+				$("#alerta-animado").animate({opacity: 1}, 1000, function() {
+
+					var millisecondsToWait = 7000;
+					setTimeout(function() {
+						$("#alerta-animado").animate({ opacity: 0 }, 2000, function () {
+							$(this).css('width', '0px');
+						})
+					}, millisecondsToWait);				
+				});
+			}
+			
+
+			// dispara o som de fim do tempo
+			//var mp3Source3 = '<source src="/audio/fim-tempo.mp3" type="audio/mpeg">';
+			//document.getElementById("div-fim-tempo").innerHTML='<audio autoplay="autoplay">' + mp3Source3 + '</audio>';
+		}
+
+
+	}, tempo_adicional );
+
+}
+
+
+
+
+// inicio kanban
+
+
+/* Events fired on the drag target */
+
+document.addEventListener("dragstart", function(event) {
+  // The dataTransfer.setData() method sets the data type and the value of the dragged data
+  event.dataTransfer.setData("Text", event.target.id);
+  
+  // Output some text when starting to drag the p element
+  //document.getElementById("demo").innerHTML = "Started to drag the p element.";
+  
+  // Change the opacity of the draggable element
+  //event.target.style.opacity = "0.4";
+});
+
+// While dragging the p element, change the color of the output text
+document.addEventListener("drag", function(event) {
+//   document.getElementById("demo").style.color = "red";
+//   document.getElementById("demo").innerHTML = "While dragging the p element";
+});
+
+// Output some text when finished dragging the p element and reset the opacity
+document.addEventListener("dragend", function(event) {
+//   document.getElementById("demo").innerHTML = "Finished dragging the p element.";
+//   event.target.style.opacity = "1";
+//   console.log(event.target.id);
+//   console.log(event.path[1].id);
+
+	var numero = event.target.id;
+	var etapa = event.path[1].id;
+	var x = event.clientX;
+	var y = event.clientY;
+
+	if(dia_corrente > 0){
+		saveHistory(numero, etapa, x, y);
+	}
+
+	// console.log('Event X: ' + event.clientX);
+	// console.log('Event Y: ' + event.clientY);
+
+	var nome_div_atualizar = event.target.id;
+
+	//console.log('div_atualizar: ' + event.target.id);
+
+	App.socket.emit('receive_pos_kanban', {
+		x: event.clientX,
+		y: event.clientY,
+		div_atualizar: nome_div_atualizar,
+		div_destino: etapa,
+		room: '<%=codigo_jogo%>-<%=time_email%>'
+	});
+
+      
+
+});
+
+/* Events fired on the drop target */
+
+// When the draggable p element enters the droptarget, change the DIVS's border style
+document.addEventListener("dragenter", function(event) {
+  if ( event.target.className == "droptarget" ) {
+	// document.getElementById("demo").innerHTML = "When the draggable p element enters the droptarget";
+    event.target.style.border = "5px dotted #0099cc";
+  }
+});
+
+// By default, data/elements cannot be dropped in other elements. To allow a drop, we must prevent the default handling of the element
+document.addEventListener("dragover", function(event) {
+  event.preventDefault();
+//   document.getElementById("demo").innerHTML = "dragover";
+});
+
+// When the draggable p element leaves the droptarget, reset the DIVS's border style
+document.addEventListener("dragleave", function(event) {
+  if ( event.target.className == "droptarget" ) {
+	event.target.style.border = "";
+	// document.getElementById("demo").innerHTML = "When the draggable p element leaves the droptarget";
+  }
+});
+
+/* On drop - Prevent the browser default handling of the data (default is open as link on drop)
+   Reset the color of the output text and DIV's border color
+   Get the dragged data with the dataTransfer.getData() method
+   The dragged data is the id of the dragged element ("drag1")
+   Append the dragged element into the drop element
+*/
+document.addEventListener("drop", function(event) {
+  event.preventDefault();
+  if ( event.target.className == "droptarget" ) {
+    //document.getElementById("demo").style.color = "";
+    event.target.style.border = "";
+    var data = event.dataTransfer.getData("Text");
+    event.target.appendChild(document.getElementById(data));
+  }
+});
+
+function saveAval(){
+
+	var form = document.getElementById("smileys");
+	var value = form.elements["smiley"].value;
+	var comment = form.elements["comment"].value;
+
+	$.ajax({
+		url: "/game_control/save_aval",
+		data: { 
+				id_jogo: '<%=id_jogo%>', 
+				avaliacao: value,
+				comentarios: comment,
+				email_jogador: '<%=email_jogador%>'
+				},
+		type: "POST",
+		beforeSend: function() {
+			//$("#" + formName).html(preloaderAzul);
+		},
+		success: function(response) {
+			console.log('Resposta ajax:' + response);
+
+			$( "div" ).remove( "#div-form-avaliacao" );
+
+			const div = document.createElement('div');
+			//div.className = 'row';
+			div.innerHTML = "<div id='div-obrigado'><div class='container box cor_totais font'>Obrigado!</div><br>" 
+
+			+"<div class='container'> "
+			+"	<button class='button' type='button'  onClick='fecharModal()''>Fechar</button> "
+			+"</div></div>";
+
+
+			document.getElementById('div-avaliacoes').appendChild(div);
+
+
+			// $("#" + formName).html(response);
+		},
+	});
+}
+
+
+function saveHistory(numero, etapa, x, y){
+
+	$.ajax({
+		url: "/game_control/save_history",
+		data: { numero: numero, id_jogo: '<%=id_jogo%>', 
+				etapa: etapa, 
+				dia: dia_corrente, 
+				x: x,
+				y: y,
+				room: '<%=codigo_jogo%>-<%=time_email%>' },
+		type: "POST",
+		beforeSend: function() {
+			//$("#" + formName).html(preloaderAzul);
+		},
+		success: function(response) {
+			console.log('Resposta ajax:' + response);
+			// $("#" + formName).html(response);
+		},
+	});
+}
+
+function saveHistoryKanban(target, target_value, source, source_value){
+	//console.log(target + " - " + target_value + " - " + source + " - " + source_value)
+
+	// $.ajax({
+	// 	url: "/game_control/save_history_kanban", 
+	// 	data: { room: '<%=codigo_jogo%>-<%=time_email%>', 
+	// 			target: target, 
+	// 			target_value: target_value, 
+	// 			source: source, 
+	// 			source_value: source_value 
+	// 		},
+	// 	type: "POST",
+	// 	beforeSend: function() {
+	// 		//$("#" + formName).html(preloaderAzul);
+	// 	},
+	// 	success: function(response) {
+	// 		console.log('Resposta insert ajax:' + response);
+	// 		// $("#" + formName).html(response);
+	// 	},
+	// });
+	
+	var type = 'POST';
+
+	$.ajax({
+		url: "/game_control/save_history_kanban",
+		crossDomain: true,
+		//dataType: "json",
+		type: type,
+		timeout: 20000,
+		//async: (async === undefined ? true : async),
+		beforeSend: function() {
+			//$("#" + formName).html(preloaderAzul);
+		},
+		retryMax: (type == "POST" ? 0 : 5),
+		data: { room: '<%=codigo_jogo%>-<%=time_email%>', 
+				target: target, 
+				target_value: target_value, 
+				source: source, 
+				source_value: source_value 
+			},
+	}).done(function(response, status, xhr) {
+		console.log('Resposta insert ajax:' + response);
+	}).fail(function(xhr, textStatus, error) {
+		console.log("Falhou: " + error);
+	});
+}
+
+function carregarHistorias(){
+
+	var conteudo =
+
+	$.ajax({
+		url: "/game/carregar_historias",
+		data: { id_jogo: '<%=id_jogo%>', room: '<%=codigo_jogo%>-<%=time_email%>' },
+		type: "POST",
+		beforeSend: function() {
+			//$("#" + formName).html(preloaderAzul);
+		},
+		success: function(response) {
+			//console.log('Resposta ajax carregar:' + response);
+
+			for(var i=0; i < response.length; i++) {
+				
+
+				div = document.createElement('div');
+				div.className = 'row';
+				// div.innerHTML = "<div class='postit font-cards' draggable='true' id='historia-"+response[i].numero+"'><b>" 
+				div.innerHTML = "<div class='postit font-cards' id='historia-"+response[i].numero+"'><b>" 
+						+ "<a href='#h"+response[i].numero+"'> "
+						+ response[i].numero+" - "+response[i].titulo+"</b></a><br> "
+						+ "Qtde. Peças: "+response[i].quantidade_pecas+"<br>Tamanho: "+response[i].tamanho+"<br> "
+						+ "ROI diário: R$ "+response[i].roi_diario+",00 "
+					+ "</div>";
+			
+				if(response[i].etapa !== ''){
+					document.getElementById(response[i].etapa).appendChild(div);
+				}
+				else {
+					document.getElementById("div-backlog").appendChild(div);
+				}
+				
+				
+			}
+		},
+	});
+}
+
+function carregarHistoriasKanban(){
+
+$.ajax({
+	url: "/game/carregar_historias_kanban",
+	data: { room: '<%=codigo_jogo%>-<%=time_email%>' },
+	type: "POST",
+	beforeSend: function() {
+		//$("#" + formName).html(preloaderAzul);
+	},
+	success: function(response) {
+		//console.log('Resposta ajax carregar:' + response);
+
+		var conteudo = '';
+
+		// do zero
+		if(response.inicial == 'true'){
+			for(var i=0; i < response.resultado.length; i++) {
+
+				conteudo = conteudo + ("<div class='postit font-cards' id='historia-"+response.resultado[i].numero+"'>" 
+					+ "<b><a href='#h"+response.resultado[i].numero+"'> "+ response.resultado[i].numero+" - "+response.resultado[i].titulo
+					+	"</a></b><br> Qtde. Peças: "+response.resultado[i].quantidade_pecas+"<br>Tamanho: "+response.resultado[i].tamanho
+					+	"<br> ROI diário: R$ "+response.resultado[i].roi_diario+",00"
+					+ "</div>");
+			}
+
+			document.getElementById("div-backlog").innerHTML = conteudo;
+		}
+		else {
+			for(var i=0; i < response.resultado.length; i++) {
+				document.getElementById(response.resultado[i].etapa).innerHTML = response.resultado[i].valor;
+			}
+		}
+		
+	},
+});
+}
+
+
+// fim kanban
+
+
+</script>
+
+<script>
+	// Get the modal
+	var modal = document.getElementById("modal_times");
+	
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[1];
+
+	function abrirModal(){
+		modal.style.display = "block";
+	}
+	
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+		modal.style.display = "none";
+		// modal_aval.style.display = "none";
+	}
+
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+		else if (event.target == modal_aval) {
+			modal_aval.style.display = "none";
+		}
+		else if (event.target == modal_pena) {
+			modal_pena.style.display = "none";
+		}
+	}
+
+	function fecharModal(){
+		modal_aval.style.display = "none";
+	}
+
+
+	// avaliacoes
+	var modal_aval = document.getElementById("modal_aval");
+
+	var span_aval = document.getElementsByClassName("close")[0];
+
+	function abrirModalAval(){
+		modal_aval.style.display = "block";
+
+		$( "div" ).remove( "#div-obrigado" );
+		$( "div" ).remove( "#div-form-avaliacao" );
+
+		const div = document.createElement('div');
+		
+		//div.className = 'row';
+		div.innerHTML = "<div class='container' id='div-form-avaliacao'>"
+		+"	<p class='font titulos-mensagens'>Como você se sente com a experiencia vivida no jogo?</p>"
+		+"	<form id='smileys'>"
+		+"	<div align='center'>"
+		+"		<input type='radio' name='smiley' value='triste' class='sad'>"
+		+"		<input type='radio' name='smiley' value='neutro' class='neutral'>"
+		+"		<input type='radio' name='smiley' value='feliz' class='happy' checked='checked'>"
+		+"	</div>"
+		+"		<div class='container font titulos-mensagens'>Você se sente&nbsp;<span id='result'>feliz</span></div>"
+		+"		<br>"
+		+"		<textarea type='text' class='texto-input' name='comment' rows='7' cols='50' placeholder='Envie seu comentário!'></textarea>"
+		+"		<br><br>"
+		+"		<div class='container'>"
+		+"			<button class='button' type='button'  onClick='saveAval()'>Enviar</button>"
+		+"		</div>"
+		+"	</form>"
+		+"</div>";
+
+		document.getElementById('div-avaliacoes').appendChild(div);
+
+	}
+	
+	span_aval.onclick = function() {
+		modal_aval.style.display = "none";
+	}
+
+	// penalidades
+	var modal_pena = document.getElementById("modal_pena");
+
+	// var span_pena = document.getElementsByClassName("close")[1];
+
+	function abrirModalMensagem(msg){
+		
+
+		modal_pena.style.display = "block";
+
+		$( "div" ).remove( "#div-penal" );
+
+		const div = document.createElement('div');
+		div.innerHTML = "<div id='div-penal'><div class='container box font'><span class='texto-alerta'>"+msg+"</span></div><br>" 
+
+		+"<div class='container'> "
+		+"	<button class='button' type='button'  onClick='fecharModalPena()''>Fechar</button> "
+		+"</div></div>";
+
+
+		document.getElementById('div-penalidades').appendChild(div);
+
+	}
+	
+	// span_pena.onclick = function() {
+	// 	modal_pena.style.display = "none";
+	// }
+
+	function fecharModalPena(){
+		modal_pena.style.display = "none";
+	}
+
+		
+	// instrucoes planning
+	var modal_planning = document.getElementById("modal_planning");
+
+	// var span_pena = document.getElementsByClassName("close")[1];
+
+	function abrirModalPlanning(){
+		
+
+		modal_planning.style.display = "block";
+
+		$( "div" ).remove( "#div-planning" );
+
+		fecharModalObjetivo();
+
+		const div = document.createElement('div');
+		div.innerHTML = "<div id='div-planning'><div class='container box font'>"
+			+"<span class='texto-alerta titulos'>Sprint Planning</span></br></br>"
+			+"<span class='texto-mensagem-planning'>O PO prioriza as historias e busca gerar o maior ROI.</br>"
+				+"O Time informa ao PO quantas historias conseguem entregar até o fim da sprint, considerando que existe um limite de peças a montar para cada um dos 4 dias úteis da Sprint.</br>"
+				+"O PO arrasta as historias para a coluna \"Sprint Backlog\" e informa qual a \"meta da Sprint\" para o facilitador do jogo.</span></div><br>" 
+
+		+"<div class='container'> "
+		+"	<button class='button' type='button'  onClick='fecharModalPlanning()''>Fechar</button> "
+		+"</div></div>";
+
+
+		document.getElementById('div-instr-planning').appendChild(div);
+
+	}
+	
+	function fecharModalPlanning(){
+		modal_planning.style.display = "none";
+	}
+
+	// instrucoes daily
+	var modal_daily = document.getElementById("modal_daily");
+
+	function abrirModalDaily(){
+		
+
+		modal_daily.style.display = "block";
+
+		$( "div" ).remove( "#div-daily" );
+	
+		fecharModalObjetivo();
+		fecharModalPlanning();
+
+		const div = document.createElement('div');
+		div.innerHTML = "<div id='div-daily'><div class='container box font'>"
+			+"<span class='texto-alerta-daily titulos'>Reunião diária</span><br><br>"
+			+"<span class='texto-mensagem-daily'>Existe um limite de peças para montar no dia.<br>"
+				+"O Time deve decidir quais peças devem montar neste dia para alcançar a meta da Sprint e discutir sobre os problemas que podem os impedir.</span></div><br>" 
+
+		+"<div class='container'> "
+		+"	<button class='button' type='button'  onClick='fecharModalDaily()''>Fechar</button> "
+		+"</div></div>";
+
+
+		document.getElementById('div-instr-daily').appendChild(div);
+
+	}
+	
+	function fecharModalDaily(){
+		modal_daily.style.display = "none";
+	}
+
+// instrucoes retro
+var modal_retro = document.getElementById("modal_retro");
+
+// var span_pena = document.getElementsByClassName("close")[1];
+
+function abrirModalRetro(){
+	
+	modal_retro.style.display = "block";
+
+	$( "div" ).remove( "#div-retro" );
+
+	fecharModalObjetivo();
+
+	if(dia_corrente < 5){
+		fecharModalDaily();
+	}
+
+	const div = document.createElement('div');
+	div.innerHTML = "<div id='div-retro'><div class='container box font'>"
+		+"<span class='texto-alerta-retro titulos'>Sprint Retrospective</span></br></br>"
+		+"<span class='texto-mensagem-retro'>PO, SM e Time devem realizar a melhoria contínua para que a próxima Sprint seja melhor do que a que acabou de terminar.</br>"
+		+"Devem informar os pontos positivos, pontos de melhorias e devem criar ao menos um plano de ação.<br> "
+		+"Clique no botão \"Retro\" para ir para a tela de Retrospectiva.</span></div></br>"
+
+	+"<div class='container'> "
+	+"	<button class='button' type='button'  onClick='fecharModalRetro()''>Fechar</button> "
+	+"</div></div>";
+
+
+	document.getElementById('div-instr-retro').appendChild(div);
+
+}
+
+function fecharModalRetro(){
+	modal_retro.style.display = "none";
+}
+
+
+
+
+function validarHistoria(id_historia) {
+	alert(id_historia);
+
+	return;
+
+	// verificar se estah na coluna div-feito. Caso nao esteja, nao deve seguir
+
+	$.ajax({
+		url: "/game_control/validate_history",
+		data: { 
+				dia: dia_selecionado, 
+				id_historia: id_historia, 
+				room: '<%=codigo_jogo%>-<%=time_email%>' },
+		type: "POST",
+		beforeSend: function() {
+			//$("#" + formName).html(preloaderAzul);
+		},
+		success: function(response) {
+			console.log('Resposta ajax:' + response);
+			// $("#" + formName).html(response);
+		},
+	});
+
+	
+	// agora chamo o ajax passando o id_jogo, id_historia e o dia selecionado no combo daquela historia
+
+	// vou na tabela 'historias_jogo' e atualizo a data fim com o dia que acabo de enviar e marco a coluna 'validada' = 's'
+
+	// o ROI somente deve ser contabilizado para historias com a coluna 'validada' = 's'
+
+	// somente deve permitir validar historias que estejam na coluna 'Pronto' no Kanban
+
+	// precisa ver se consigo recarregar o dia que a historia foi entregue apos recarregar a tela
+}
+
+
+function post(path, params, method='post') {
+
+	const form = document.createElement('form');
+	form.method = method;
+	form.action = path;
+
+	console.log(params['nova_janela']);
+
+	if(params.hasOwnProperty('nova_janela') && params['nova_janela'] == 'true'){
+		form.target = '_blank';
+	}
+
+
+	for (const key in params) {
+	if (params.hasOwnProperty(key) && params[key] !== 'nova_janela') {
+		const hiddenField = document.createElement('input');
+		hiddenField.type = 'hidden';
+		hiddenField.name = key;
+		hiddenField.value = params[key];
+
+		form.appendChild(hiddenField);
+		}
+	}
+
+	document.body.appendChild(form);
+	form.submit();
+}
+
+// Very simple JS for updating the text when a radio button is clicked
+const INPUTS = document.querySelectorAll('#smileys input');
+const updateValue = e => document.querySelector('#result').innerHTML = e.target.value;
+
+INPUTS.forEach(el => el.addEventListener('click', e => updateValue(e)));
+
+
+// contagem
+function contar(){
+	var room = '<%=codigo_jogo%>-<%=time_email%>';
+
+	$.ajax({
+		url: "/game/contar",
+		data: { room: room, arrayImagensHistorias: '<% arrayImagensHistorias %>' },
+		type: "POST",
+		beforeSend: function() {
+			//$("#" + formName).html(preloaderAzul);
+		},
+		success: function(response) {
+			console.log('Resposta ajax:' + response.conteudo);
+			// $("#" + formName).html(response);
+
+			//console.log('Chamando o enviar_card no socket');
+		},
+	});
+}
+
+var dragAndDrop = {
+    
+    init: function () {
+        this.dragula();
+        this.drake();
+    },
+
+    drake: function () {
+		//this.dragula.on('drop', this.dropped.bind(this));
+		
+		this.dragula.on('drop', function (el, target, source) {
+
+			// preciso do id para tratar e gravar os status das historias
+			var numero = el.id;
+			
+			// devo enviar a coluna destino para gravar o novo status do item movido
+			var etapa = target.id;
+
+			// if(dia_corrente > 0){
+				saveHistory(numero, etapa, 0, 0);
+
+				saveHistoryKanban(target.id, target.innerHTML, source.id, source.innerHTML);
+			// }
+
+			// console.log('destino: ' + target.id);
+			// console.log('atual: ' + source.id);
+
+			App.socket.emit('receive_pos_kanban_new', {
+				numero: numero,
+				target: target.id,
+				target_value: target.innerHTML,
+				source: source.id,
+				source_value: source.innerHTML,
+				room: '<%=codigo_jogo%>-<%=time_email%>'
+			});
+			
+		});
+
+		
+    },
+
+    dragula: function () {
+		this.dragula = dragula( [ document.querySelector('#div-backlog'), document.querySelector('#div-sprint-backlog'), 
+		document.querySelector('#div-fazer'), document.querySelector('#div-fazendo'), document.querySelector('#div-feito') ],
+        {
+            moves: this.canMove.bind(this),
+            copy: false,
+        });
+    },
+    
+    canMove: function () {
+		if(dia_corrente > 0){
+			return true;
+		} else {
+			abrirModalMensagem('O dia corrente precisa ser maior que 0. Por favor verifique com o Facilitador e pressione a tecla F5.');
+		}
+    },
+    
+    dropped: function (el) {	
+		//alert(el.innerHTML);
+    }
+
+};
+
+dragAndDrop.init();
+
+
+
+//inicio
+
+$(window).resize(function() { 
+	var browserZoomLevel = Math.round(window.devicePixelRatio * 100);
+
+	if(browserZoomLevel < 80){
+		alert('O zoom abaixo de 80% vai prejudicar sua experiencia no jogo.');
+	}
+});
+
+//fim
+
+
+</script>

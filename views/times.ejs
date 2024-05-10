@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Skyborne Adventure Quest</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="/imagens/favicon.ico">
+
+        <!-- plugin css -->
+        <link href="../../novo_layout/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css" /> 
+
+        <!-- App css -->
+        <link href="../../novo_layout/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body>
+
+        <%- include topbar %>
+
+        <%- include left-sidebar %>
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Começo Modal Tarefa-->
+                    
+                    <div id="myModal-time" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="myModalLabel">Detalhes do Time</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="div-modal-time">
+                                    <div ></div> 
+                                </div>
+                                
+                                <div class="modal-body" id="div-modal-nova-time">
+                                    <div ></div> 
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                    <button type="button" onclick="salvar_time()" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                    
+                    <!--Fim Modal Tarefa-->
+                    
+
+                    <!--Inicio tarefas -->
+
+                                        <!-- Start Content-->
+                                        <div class="container-fluid">
+                                            <div class="row page-title">
+                                                <div class="col-md-12">
+                                                    <nav aria-label="breadcrumb" class="float-right mt-1">
+                                                    </nav>
+                    
+                                                    <h4 class="mb-1 mt-0">Times</h4>
+                                                    <h5 class="mb-1 mt-0">
+                                                    <a href="#" data-toggle="modal" data-target="#myModal-time" onClick="carregar_time(0)">
+                                                        <i data-feather="plus-square"></i>
+                                                        <span> Criar Time</span>
+                                                    </a>
+                                                    </h5>
+                                                </div>
+                                            </div>
+                    
+                                            <div class="row" id="div-times">
+                                                <div id="div-corpo-times"class="col-12"> 
+                                                    <div class="card"> 
+                                                        <div class="card-body"> 
+                                                            <table id="tabela-time" class="table dt-responsive nowrap"> 
+                                                                <thead>	
+                                                                    <tr> 
+                                                                        <th>ID</th> 
+                                                                        <th>Nome</th> 
+                                                                        <th>Ativo</th> 
+                                                                    </tr> 
+                                                                </thead> 
+                                                                <tbody> 
+                                                                    <%
+                                                                    if(typeof data_times !== 'undefined' && data_times !== null){
+                                                                    for(var i=0; i < data_times.length; i++) {%>
+                                                                        <tr>
+                                                                            <td><%= data_times[i].id %></td>
+                                                                            <td><a href="#" data-toggle="modal" data-target="#myModal-time" onClick="carregar_time(<%=data_times[i].id%>)" onmouseover="window.status='Editar time'; return true;"> <%= data_times[i].nome %></a></td>
+                                                                            <td><%= (data_times[i].ativo == 's' ? 'Sim' : 'Não') %></td>
+                                                                        </tr>
+                                                                    <%
+                                                                    }
+                                                                    }
+                                                                    %>
+                                                                </tbody> 
+                                                            </table> 
+                                                        </div> <!-- end card body--> 
+                                                    </div> <!-- end card --> 
+                                                </div> <!-- end col--> 
+                                            </div>
+                                            <!-- end row-->
+                                            
+                                        </div> <!-- container-fluid -->
+                    
+
+                    <!--Fim tarefas-->
+
+                </div> <!-- content -->
+
+                <%- include footer-new-layout %>
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+
+        </div>
+        <!-- END wrapper -->
+
+        
+        <%- include right-sidebar %>
+
+        
+
+        <!-- Vendor js -->
+        <script src="../../novo_layout/assets/js/vendor.min.js"></script>
+
+        <!-- datatable js -->
+        <script src="../../novo_layout/assets/libs/datatables/jquery.dataTables.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.responsive.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+        
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.buttons.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.html5.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.flash.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.print.min.js"></script>
+
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.select.min.js"></script>
+
+        <!-- Datatables init -->
+        <script src="../../novo_layout/assets/js/pages/datatables.init.js"></script>
+
+        <!-- App js -->
+        <script src="../../novo_layout/assets/js/app.min.js"></script>
+
+        <!-- Mascara data--> 
+
+        <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>   
+         
+
+    </body>
+</html>
+<script>
+
+
+
+function carregar_time(id){
+
+// alert('ID campanha: ' + id);
+//  return;
+
+   if (id == 0){
+
+        $( "div" ).remove( "#div-form-nova-time" );
+        $( "div" ).remove( "#div-form-edicao-time" );
+
+        const div_nova = document.createElement('div');
+
+        var texto2 = "<div class='card' id='div-form-nova-time'>"
+                    + "	<div class='card-body'>"
+                    + ""
+                    + "		<form>"
+                    + "			<div class='form-group'>"
+                    + "				<label for=''>Nome</label>"
+                    + "				<input type='hidden' id='id-time' value='"+id+"'>"
+                    + "			    <input class='form-control' id='_nome_time' aria-describedby='emailHelp' placeholder='Informe o nome'> "
+                    + "			</div>"
+                    + "		</form>"
+                    + "	</div> <!-- end card-body-->"
+                    + "</div> <!-- end card-->";
+
+        div_nova.innerHTML = texto2;
+
+        console.log(texto2);
+
+        document.getElementById('div-modal-nova-time').appendChild(div_nova);
+       
+   } else {
+
+       $.ajax({
+                url: "/times/carregar_detalhe_time",
+           data: { 
+                   id_time: id
+                   },
+           type: "POST",
+           beforeSend: function() {
+               //$("#" + formName).html(preloaderAzul);
+           },
+           success: function(response) {
+            //alert(response.data_time.length)
+               $( "div" ).remove( "#div-form-edicao-time" );
+               $( "div" ).remove( "#div-form-nova-time" );
+
+               const div = document.createElement('div');
+            //alert(response.data_time[0].nome)
+
+               var texto2 = "<div class='card' id='div-form-edicao-time'>"
+               + "	<div class='card-body'>"
+               + ""
+               + "		<form>"
+               + "			<div class='form-group'>"
+               + "				<label for=''>Nome</label>"
+               + "             <input type='hidden' id='id-time' value='"+id+"'>"
+               + "				<input type='text' class='form-control' id='_nome_time' aria-describedby='emailHelp' placeholder='Informe o objetivo' "
+                               if(typeof response.data_time[0].nome !== 'undefined' && response.data_time[0].nome !== null){
+                                   texto2 = texto2 + " value='"+response.data_time[0].nome+"'";
+                               }
+                               texto2 = texto2 +" >"
+               + "			</div>"
+
+               + "			<div class='form-group mb-3'>"
+               + "				<div class='custom-control custom-switch mb-2'>"
+               + "					<input type='checkbox' class='custom-control-input' id='_ativo_time' "
+               if(typeof response.data_time[0].ativo !== 'undefined' && response.data_time[0].ativo !== null && response.data_time[0].ativo == 's'){
+                   texto2 = texto2 + " checked ";
+               }
+               texto2 = texto2 +" >"
+               + "					<label class='custom-control-label' for='_ativo_time'>Time ativo</label>"
+               + "				</div>"
+               + "			</div>"
+               + "			<!-- <button type='submit' class='btn btn-primary'>Submit</button> -->"
+               + "		</form>"
+               + ""
+               + "	</div> <!-- end card-body-->"
+               + "</div> <!-- end card-->";
+
+               div.innerHTML = texto2;
+              // alert(texto2)
+               console.log(texto2);
+
+               document.getElementById('div-modal-time').appendChild(div);
+
+           },
+       });
+
+
+
+
+
+   }
+}
+
+function salvar_time(){
+
+
+var id = document.getElementById('id-time').value;
+var nome_time = document.getElementById('_nome_time').value;
+var ativo = id == 0 ? 's' : document.getElementById('_ativo_time').checked;
+
+   $.ajax({
+       url: "/times/salvar_time",
+       data: { 
+               id_time: id, 
+               nome: nome_time,
+               ativo: ativo
+               },
+       type: "POST",
+       beforeSend: function() {
+           //$("#" + formName).html(preloaderAzul);
+       },  
+       success: function(response) {
+           console.log('Resposta ajax:' + response);
+
+           if(response.message_erro !== ''){
+
+               // document.getElementById("email-jogador").value = "";
+               //document.getElementById("resposta").innerHTML = "</br></br>"+response.message;
+               console.log('Erro ao atualizar time: ' + response.message_erro);
+                               
+           }
+           else {
+               console.log('Sucesso!');
+
+               location.reload();
+           }
+           
+       },
+   });
+
+
+}
+
+
+
+
+</script>
+

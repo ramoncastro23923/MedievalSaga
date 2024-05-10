@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Scrum 3D Park - Admin</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="/imagens/favicon.ico">
+
+        <!-- plugin css -->
+        <link href="../../novo_layout/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css" /> 
+
+        <!-- <link href="../../novo_layout/assets/libs/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+        <link href="../../novo_layout/assets/libs/select2/select2.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/multiselect/multi-select.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.css" rel="stylesheet" type="text/css" /> -->
+
+        <!-- App css -->
+        <link href="../../novo_layout/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body>
+
+        <%- include topbar %>
+
+        <%- include left-sidebar %>
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- sample modal content -->
+                    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="myModalLabel">Detalhes da Campanha</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="div-modal">
+                                    <div ></div> 
+
+                                    <!-- <div class="col-xl-6"> -->
+                                        
+                                    <!-- </div> -->
+
+                                </div>
+                                
+                                <div class="modal-body" id="div-modal-nova">
+                                    <div ></div> 
+
+                                    <!-- <div class="col-xl-6"> -->
+                                        
+                                    <!-- </div> -->
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                    <button type="button" onclick="salvar_campanha()" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+
+                    <!-- Começo Modal Tarefa-->
+                    
+                    <div id="myModal-tarefa" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="myModalLabel">Detalhes da Tarefa</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="div-modal-tarefa">
+                                    <div ></div> 
+                                </div>
+                                
+                                <div class="modal-body" id="div-modal-nova-tarefa">
+                                    <div ></div> 
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                    <button type="button" onclick="salvar_tarefa()" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                    
+                    <!--Fim Modal Tarefa-->
+                    
+                    
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+                        <div class="row page-title">
+                            <div class="col-md-12">
+                                <nav aria-label="breadcrumb" class="float-right mt-1">
+                                    <!--<ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="#">Shreyu</a></li>
+                                        <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Advanced</li>
+                                    </ol>-->
+
+
+								<!-- <button type="button" class="btn btn-primary dropdown-toggle"  onclick="location.href='/home/new_game/pontuar'" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class='uil uil-file-alt mr-1'></i>Repontuar
+								</button>
+								<button type="button" class="btn btn-primary dropdown-toggle" onclick=" window.open('/home/simulacao','_blank')" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class='uil uil-file-alt mr-1'></i>Simulação
+								</button> -->
+                                </nav>
+
+                                <h4 class="mb-1 mt-0">Backlog</h4>
+                                <h4 class="mb-1 mt-0">
+                                <a href="#" data-toggle="modal" data-target="#myModal" onClick="carregar_campanha(0)">
+                                    <i data-feather="smile"></i>
+                                    <span> Criar campanha</span>
+                                </a>
+                                </h4>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <table id="basic-datatable" class="table dt-responsive nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Nome (Objetivo)</th>
+                                                    <th>Data início</th>
+                                                    <th>Data fim</th>
+                                                    <th>Ativado</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <%
+                                                if(typeof data !== 'undefined' && data !== null){
+                                                for(var i=0; i < data.length; i++) {%>
+                                                    <tr>
+                                                        <td><%= data[i].id %></td>
+                                                        <td><a href="#" data-toggle="modal" data-target="#myModal" onClick="carregar_campanha(<%=data[i].id%>)" onmouseover="window.status='Editar Campanha'; return true;"> <%= data[i].nome %></a></td>
+                                                        <td><%= data[i].data_inicio %></td>
+                                                        <td><%= data[i].data_fim %></td>
+                                                        <td><%= (data[i].ativo == 's' ? 'Sim' : 'Não') %></td>
+                                                    </tr>
+                                                <%
+                                                }
+                                                }
+                                                %>
+                                                
+                                            </tbody>
+                                        </table>
+
+                                    </div> <!-- end card body-->
+                                </div> <!-- end card -->
+                            </div><!-- end col-->
+                        </div>
+                        <!-- end row-->
+                        
+                    </div> <!-- container-fluid -->
+
+                    <!--Inicio tarefas -->
+
+                                        <!-- Start Content-->
+                                        <div class="container-fluid">
+                                            <div class="row page-title">
+                                                <div class="col-md-12">
+                                                    <nav aria-label="breadcrumb" class="float-right mt-1">
+                                                    </nav>
+                    
+                                                    <h4 class="mb-1 mt-0">Tarefas</h4>
+                                                    <h4 class="mb-1 mt-0">
+                                                    <a href="#" data-toggle="modal" data-target="#myModal-tarefa" onClick="carregar_tarefa(0)">
+                                                        <i data-feather="smile"></i>
+                                                        <span> Criar tarefas</span>
+                                                    </a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                    
+                                            <div class="row" id="div-tarefas">
+                                                <div id="div-corpo-tarefas"class="col-12"> 
+                                                    <div class="card"> 
+                                                        <div class="card-body"> 
+                                                            <table id="tabela-tarefa" class="table dt-responsive nowrap"> 
+                                                                <thead>	
+                                                                    <tr> 
+                                                                        <th>ID</th> 
+                                                                        <th>Nome</th> 
+                                                                        <th>Descrição</th> 
+                                                                        <th>Esforço</th> 
+                                                                        <th>Responsável</th> 
+                                                                        <th>Data início</th> 
+                                                                        <th>Data fim</th> 
+                                                                        <th>Ativado</th> 
+                                                                    </tr> 
+                                                                </thead> 
+                                                                <tbody> 
+                                                                </tbody> 
+                                                            </table> 
+                                                        </div> <!-- end card body--> 
+                                                    </div> <!-- end card --> 
+                                                </div> <!-- end col--> 
+                                            </div>
+                                            <!-- end row-->
+                                            
+                                        </div> <!-- container-fluid -->
+                    
+
+                    <!--Fim tarefas-->
+
+                </div> <!-- content -->
+
+                <%- include footer-new-layout %>
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+
+        </div>
+        <!-- END wrapper -->
+
+        
+        <%- include right-sidebar %>
+
+        
+
+        <!-- Vendor js -->
+        <script src="../../novo_layout/assets/js/vendor.min.js"></script>
+
+        <!-- datatable js -->
+        <script src="../../novo_layout/assets/libs/datatables/jquery.dataTables.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.responsive.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+        
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.buttons.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.html5.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.flash.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.print.min.js"></script>
+
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.select.min.js"></script>
+
+        <!-- Datatables init -->
+        <script src="../../novo_layout/assets/js/pages/datatables.init.js"></script>
+
+        <!-- App js -->
+        <script src="../../novo_layout/assets/js/app.min.js"></script>
+
+        <!-- Mascara data--> 
+
+        <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>    
+
+    </body>
+</html>
+<script>
+
+    carregar_tarefas();
+
+    function carregar_campanha(id){
+
+     //  alert('ID campanha: ' + id);
+     //  return;
+
+        if (id == 0){
+            
+    //       alert(id);
+            $( "div" ).remove( "#div-form-nova" );
+            $( "div" ).remove( "#div-form-edicao" );
+
+            const div_nova = document.createElement('div');
+            // alert(response.data[0].nome)
+
+             var texto2 = "<div class='card' id='div-form-nova'>"
+            + "	<div class='card-body'>"
+            + ""
+            + "		<form>"
+            + "			<div class='form-group'>"
+            + "				<label for='exampleInputEmail1'>Nome</label>"
+            + "             <input type='hidden' id='id-campanha' value='"+id+"'>"
+            + "				<input type='text' class='form-control' id='_nome_campanha' aria-describedby='emailHelp' placeholder='Informe o objetivo'> "
+                           
+            + "			</div>"
+
+            + "			<div class='form-group'>"
+            + "				<label for='dataInicio'>Data início</label>"
+            + "				<input type='text' class='form-control' id='_data_inicio' aria-describedby='emailHelp' placeholder='Informe a data início'> "
+            + "			</div>"
+
+            + "			<div class='form-group'>"
+            + "				<label for='dataFim'>Data Fim</label>"
+            + "				<input type='text' class='form-control' id='_data_fim' aria-describedby='emailHelp' placeholder='Informe a data fim'> "
+            + "			</div>"
+            + "		</form>"
+            + ""
+            + "	</div> <!-- end card-body-->"
+            + "</div> <!-- end card-->";
+
+            div_nova.innerHTML = texto2;
+
+            console.log(texto2);
+
+            document.getElementById('div-modal-nova').appendChild(div_nova);
+
+            $(document).ready(function () {
+                $('#_data_inicio').mask('99/99/9999');
+                $('#_data_fim').mask('99/99/9999');
+                return false;
+            });
+
+        } else {
+
+            $.ajax({
+                url: "/campanhas/carregar_detalhe_campanha",
+                data: { 
+                        id_campanha: id
+                        },
+                type: "POST",
+                beforeSend: function() {
+                    //$("#" + formName).html(preloaderAzul);
+                },
+                success: function(response) {
+                    $( "div" ).remove( "#div-form-edicao" );
+                    $( "div" ).remove( "#div-form-nova" );
+
+                    const div = document.createElement('div');
+                // alert(response.data[0].nome)
+
+                    var texto2 = "<div class='card' id='div-form-edicao'>"
+                    + "	<div class='card-body'>"
+                    + ""
+                    + "		<form>"
+                    + "			<div class='form-group'>"
+                    + "				<label for='exampleInputEmail1'>Nome</label>"
+                    + "             <input type='hidden' id='id-campanha' value='"+id+"'>"
+                    + "				<input type='text' class='form-control' id='_nome_campanha' aria-describedby='emailHelp' placeholder='Informe o objetivo' "
+                                    if(typeof response.data_campanha[0].nome !== 'undefined' && response.data_campanha[0].nome !== null){
+                                        texto2 = texto2 + " value='"+response.data_campanha[0].nome+"'";
+                                    }
+                                    texto2 = texto2 +" >"
+                    + "				<!-- <small id='emailHelp' class='form-text text-muted'>We'll never share your email with anyone else.</small> -->"
+                    + "			</div>"
+
+                    + "			<div class='form-group'>"
+                    + "				<label for='dataInicio'>Data início</label>"
+                    + "				<input type='text' class='form-control' id='_data_inicio' aria-describedby='emailHelp' placeholder='Informe a data início' "
+                                    if(typeof response.data_campanha[0].data_inicio !== 'undefined' && response.data_campanha[0].data_inicio !== null){
+                                        texto2 = texto2 + " value='"+response.data_campanha[0].data_inicio+"'";
+                                    }
+                                    texto2 = texto2 +" >"
+                    + "				<!-- <small id='emailHelp' class='form-text text-muted'>We'll never share your email with anyone else.</small> -->"
+                    + "			</div>"
+
+                    + "			<div class='form-group'>"
+                    + "				<label for='dataFim'>Data Fim</label>"
+                    + "				<input type='text' class='form-control' id='_data_fim' aria-describedby='emailHelp' placeholder='Informe a data fim' "
+                                    if(typeof response.data_campanha[0].data_fim !== 'undefined' && response.data_campanha[0].data_fim !== null){
+                                        texto2 = texto2 + " value='"+response.data_campanha[0].data_fim+"'";
+                                    }
+                                    texto2 = texto2 +" >"
+                    + "				<!-- <small id='emailHelp' class='form-text text-muted'>We'll never share your email with anyone else.</small> -->"
+                    + "			</div>"
+
+                    + "			<div class='form-group mb-3'>"
+                    + "				<div class='custom-control custom-switch mb-2'>"
+                    + "					<input type='checkbox' class='custom-control-input' id='_ativo' "
+                    if(typeof response.data_campanha[0].ativo !== 'undefined' && response.data_campanha[0].ativo !== null && response.data_campanha[0].ativo == 's'){
+                        texto2 = texto2 + " checked ";
+                    }
+                    texto2 = texto2 +" >"
+                    + "					<label class='custom-control-label' for='_ativo'>Campanha ativa</label>"
+                    + "				</div>"
+                    + "			</div>"
+                    + "			<!-- <button type='submit' class='btn btn-primary'>Submit</button> -->"
+                    + "		</form>"
+                    + ""
+                    + "	</div> <!-- end card-body-->"
+                    + "</div> <!-- end card-->";
+
+                    div.innerHTML = texto2;
+
+                    console.log(texto2);
+
+                    document.getElementById('div-modal').appendChild(div);
+
+                $(document).ready(function () {
+                $('#_data_inicio').mask('99/99/9999');
+                $('#_data_fim').mask('99/99/9999');
+                return false;
+                    
+                    });
+                },
+            });
+
+
+
+        }
+    }
+
+function salvar_campanha(){
+
+    //tratamento de datas
+
+    var data_inicio_convertida = convertData(document.getElementById('_data_inicio').value);
+    var data_fim_convertida = convertData(document.getElementById('_data_fim').value);
+
+    if (data_inicio_convertida > data_fim_convertida) {
+        alert('a data inicial não pode ser maior que a data final')
+        return;
+    }
+// to do - tratar para não deixar informar data vazia
+    
+
+	var id = document.getElementById('id-campanha').value;
+    var nome_campanha = document.getElementById('_nome_campanha').value;
+    var data_inicio = document.getElementById('_data_inicio').value;
+    var data_fim = document.getElementById('_data_fim').value;
+    var ativo = id == 0 ? 's' : document.getElementById('_ativo').checked;
+ 
+		$.ajax({
+			url: "/campanhas/salvar_campanha",
+			data: { 
+					id_campanha: id, 
+                    nome: nome_campanha,
+                    data_inicio: data_inicio,
+                    data_fim: data_fim, 
+					ativo: ativo,
+                    // TODO: lembrar de criar usuario que alterou
+					},
+			type: "POST",
+			beforeSend: function() {
+				//$("#" + formName).html(preloaderAzul);
+			},  
+			success: function(response) {
+				console.log('Resposta ajax:' + response);
+
+				if(response.message_erro !== ''){
+
+					// document.getElementById("email-jogador").value = "";
+					document.getElementById("resposta").innerHTML = "</br></br>"+response.message_erro;
+									
+				}
+                else {
+                    console.log('Sucesso: ' + response.message);
+
+                    location.reload();
+                }
+				
+			},
+		});
+	
+	
+}
+
+function convertData (valor){
+    
+    var partesData = valor.split("/");
+    var data_formatada = new Date(partesData[2], partesData[1] - 1, partesData[0]);
+
+    return data_formatada;
+} 
+
+
+function carregar_tarefa(id){
+
+//  alert('ID campanha: ' + id);
+//  return;
+
+   if (id == 0){
+       
+//       alert(id);
+       $( "div" ).remove( "#div-form-nova-tarefa" );
+       $( "div" ).remove( "#div-form-edicao-tarefa" );
+
+       const div_nova = document.createElement('div');
+       // alert(response.data[0].nome)
+
+        var texto2 = "<div class='card' id='div-form-nova-tarefa'>"
+        //Não sei se será utilizado, separar depois adequadamente|| Ramon. Minha sugestão é usar as mesmas tabelas do phpmyadmin dentro de tarefas
+       + "	<div class='card-body'>"
+       + ""
+       + "		<form>"
+       + "			<div class='form-group'>"
+       + "				<label for=''>Nome</label>"
+       + "             <input type='hidden' id='id-tarefa' value='"+id+"'>"
+       + "			    <input type='text' class='form-control' id='_nome_tarefa' aria-describedby='emailHelp' placeholder='Informe o nome'> "
+       + "			</div>"
+       + "			<div class='form-group'>"
+       + "				<label for=''>Descrição</label>"
+       + "			    <input type='textarea' class='form-control' id='_descricao_tarefa' aria-describedby='emailHelp' placeholder='Informe a descricao'> "
+       + "			</div>"
+       + " <div class='form-group'>"
+                + "				<div class='form-group mt-3 mt-sm-0'>"
+                + "					<label>Esforço</label>"
+                + "         			<select data-plugin='customselect' id='_esforco' class='form-control' data-placeholder='Selecione o esforço'>"
+                + "						    <option value='0'>Nenhum</option>"
+                + "						    <option value='1'>1 ponto</option>"
+                + "						    <option value='2'>2 pontos</option>"
+                + "						    <option value='3'>3 pontos</option>"
+                + "						    <option value='5'>5 pontos</option>"
+                + "						    <option value='8'>8 pontos</option>"
+                + "						    <option value='13'>13 pontos</option>"
+                + "						    <option value='21>21 pontos</option>";
+                + "	                    </select>"
+                + "				</div>"
+                + "			</div>"
+
+       + "			<div class='form-group'>"
+       + "				<label for='dataInicio'>Data início</label>"
+       + "				<input type='text' class='form-control' id='_data_inicio' aria-describedby='emailHelp' placeholder='Informe a data início'> "
+       + "			</div>"
+       + "			<div class='form-group'>"
+       + "				<label for='dataFim'>Data Fim</label>"
+       + "				<input type='text' class='form-control' id='_data_fim' aria-describedby='emailHelp' placeholder='Informe a data fim'> "
+       + "			</div>"
+       + "		</form>"
+       + ""
+       + "	</div> <!-- end card-body-->"
+       + "</div> <!-- end card-->";
+
+       div_nova.innerHTML = texto2;
+
+       console.log(texto2);
+
+       document.getElementById('div-modal-nova').appendChild(div_nova);
+
+       $(document).ready(function () {
+           $('#_data_inicio').mask('99/99/9999');
+           $('#_data_fim').mask('99/99/9999');
+           return false;
+       });
+
+   } else {
+
+       $.ajax({
+                url: "/tarefa/carregar_detalhe_tarefa",
+           data: { 
+                   id_tarefa: id
+                   },
+           type: "POST",
+           beforeSend: function() {
+               //$("#" + formName).html(preloaderAzul);
+           },
+           success: function(response) {
+               $( "div" ).remove( "#div-form-edicao-tarefa" );
+               $( "div" ).remove( "#div-form-nova-tarefa" );
+
+               const div = document.createElement('div');
+           // alert(response.data[0].nome)
+
+               var texto2 = "<div class='card' id='div-form-edicao-tarefa'>"
+               + "	<div class='card-body'>"
+               + ""
+               + "		<form>"
+               + "			<div class='form-group'>"
+               + "				<label for=''>Nome</label>"
+               + "             <input type='hidden' id='id-tarefa' value='"+id+"'>"
+               + "				<input type='text' class='form-control' id='_nome_tarefa' aria-describedby='emailHelp' placeholder='Informe o objetivo' "
+                               if(typeof response.data_tarefa[0].nome !== 'undefined' && response.data_tarefa[0].nome !== null){
+                                   texto2 = texto2 + " value='"+response.data_tarefa[0].nome+"'";
+                               }
+                               texto2 = texto2 +" >"
+               + "			</div>"
+               + "			<div class='form-group'>"
+                + "				<label for=''>Descrição</label>"
+               + "				<textarea class='form-control' id='_descricao_tarefa' aria-describedby='emailHelp' placeholder='Informe a descrição' rows='5' "
+                               if(typeof response.data_tarefa[0].descricao !== 'undefined' && response.data_tarefa[0].descricao !== null){
+                                   texto2 = texto2 + " value='"+response.data_tarefa[0].descricao+"'";
+                               }
+                               texto2 = texto2 +" ></textarea>" 
+               + "			</div>"
+
+               + " <div class='form-group'>"
+                + "				<div class='form-group mt-3 mt-sm-0'>"
+                + "					<label>Dificuldade</label>"
+                + "         			<select data-plugin='customselect' id='_esforco' class='form-control' data-placeholder='Selecione o esforço'>"
+                + "						    <option value='0'>Nenhum</option>"
+                + "						    <option value='1'>1 ponto</option>"
+                + "						    <option value='2'>2 pontos</option>"
+                + "						    <option value='3'>3 pontos</option>"
+                + "						    <option value='5'>5 pontos</option>"
+                + "						    <option value='8'>8 pontos</option>"
+                + "						    <option value='13'>13 pontos</option>"
+                + "						    <option value='21'>21 pontos</option>"
+                + "	                   </select>"
+                + "             </div>"
+                + "			</div>"
+                + "			<div class='form-group'>"
+               + "				<label for='dataInicio'>Data início</label>"
+               + "				<input type='text' class='form-control' id='_data_inicio' aria-describedby='emailHelp' placeholder='Informe a data início' "
+                               if(typeof response.data_tarefa[0].data_inicio !== 'undefined' && response.data_tarefa[0].data_inicio !== null){
+                                   texto2 = texto2 + " value='"+response.data_tarefa[0].data_inicio+"'";
+                               }
+                               texto2 = texto2 +" >"
+               + "				<!-- <small id='emailHelp' class='form-text text-muted'>We'll never share your email with anyone else.</small> -->"
+               + "			</div>"
+
+               + "			<div class='form-group'>"
+               + "				<label for='dataFim'>Data Fim</label>"
+               + "				<input type='text' class='form-control' id='_data_fim' aria-describedby='emailHelp' placeholder='Informe a data fim' "
+                               if(typeof response.data_tarefa[0].data_fim !== 'undefined' && response.data_tarefa[0].data_fim !== null){
+                                   texto2 = texto2 + " value='"+response.data_tarefa[0].data_fim+"'";
+                               }
+                               texto2 = texto2 +" >"
+               + "				<!-- <small id='emailHelp' class='form-text text-muted'>We'll never share your email with anyone else.</small> -->"
+               + "			</div>"
+
+               + "			<div class='form-group mb-3'>"
+               + "				<div class='custom-control custom-switch mb-2'>"
+               + "					<input type='checkbox' class='custom-control-input' id='_ativo' "
+               if(typeof response.data_tarefa[0].ativo !== 'undefined' && response.data_tarefa[0].ativo !== null && response.data_tarefa[0].ativo == 's'){
+                   texto2 = texto2 + " checked ";
+               }
+               texto2 = texto2 +" >"
+               + "					<label class='custom-control-label' for='_ativo'>Tarefa ativa</label>"
+               + "				</div>"
+               + "			</div>"
+               + "			<!-- <button type='submit' class='btn btn-primary'>Submit</button> -->"
+               + "		</form>"
+               + ""
+               + "	</div> <!-- end card-body-->"
+               + "</div> <!-- end card-->";
+
+               div.innerHTML = texto2;
+
+               console.log(texto2);
+
+               document.getElementById('div-modal-tarefa').appendChild(div);
+
+               if(typeof response.data_tarefa[0].esforco !== 'undefined' && response.data_tarefa[0].esforco !== null ){
+                   document.getElementById('_esforco').value=response.data_tarefa[0].esforco;
+                }
+
+           $(document).ready(function () {
+           $('#_data_inicio').mask('99/99/9999');
+           $('#_data_fim').mask('99/99/9999');
+           return false;
+               
+               });
+           },
+       });
+
+
+
+   }
+}
+
+function salvar_tarefa(){
+
+//tratamento de datas
+
+var data_inicio_convertida = convertData(document.getElementById('_data_inicio_tarefa').value);
+var data_fim_convertida = convertData(document.getElementById('_data_fim_tarefa').value);
+
+if (data_inicio_convertida > data_fim_convertida) {
+   alert('a data inicial não pode ser maior que a data final')
+   return;
+}
+// to do - tratar para não deixar informar data vazia
+
+
+var id = document.getElementById('id-tarefa').value;
+var nome_tarefa = document.getElementById('_nome_tarefa').value;
+var data_inicio = document.getElementById('_data_inicio_tarefa').value;
+var data_fim = document.getElementById('_data_fim_tarefa').value;
+var ativo = id == 0 ? 's' : document.getElementById('_ativo_tarefa').checked;
+
+   $.ajax({
+       url: "/tarefa/salvar_tarefa",
+       data: { 
+               id_tarefa: id, 
+               nome: nome_tarefa,
+               data_inicio: data_inicio,
+               data_fim: data_fim, 
+               ativo: ativo,
+               // TODO: lembrar de criar usuario que alterou
+               },
+       type: "POST",
+       beforeSend: function() {
+           //$("#" + formName).html(preloaderAzul);
+       },  
+       success: function(response) {
+           console.log('Resposta ajax:' + response);
+
+           if(response.message_erro !== ''){
+
+               // document.getElementById("email-jogador").value = "";
+               document.getElementById("resposta").innerHTML = "</br></br>"+response.message_erro;
+                               
+           }
+           else {
+               console.log('Sucesso: ' + response.message);
+
+               location.reload();
+           }
+           
+       },
+   });
+
+
+}
+
+
+
+
+// Início
+
+function carregar_tarefas(){
+
+       $.ajax({
+                url: "/tarefa/list",
+           data: { 
+                   },
+           type: "POST",
+           beforeSend: function() {
+               //$("#" + formName).html(preloaderAzul);
+           },
+           success: function(response) {
+               $( "div" ).remove( "#div-corpo-tarefas" );
+
+            const div = document.createElement('div');
+           // alert(response.data[0].nome)
+
+            var texto3 = "<div id='div-corpo-tarefas' class='col-12'> "
+                        +"	<div class='card'> "
+                        +"		<div class='card-body'> "
+                        +"			<table id='tabela-tarefa' class='table dt-responsive nowrap'> "
+                        +"				<thead>	"
+                        +"					<tr> "
+                        +"						<th>ID</th> "
+                        +"						<th>Nome</th> "
+                        +"						<th>Descrição</th> "
+                        +"						<th>Esforço</th> "
+                        +"						<th>Responsável</th> "
+                        +"						<th>Data início</th> "
+                        +"						<th>Data fim</th> "
+                        +"						<th>Ativado</th> "
+                        +"					</tr> "
+                        +"				</thead> "
+                        +"				<tbody> ";
+
+                                             
+                                            if(typeof response.data_tarefas !== 'undefined' && response.data_tarefas !== null){
+                                            for(var i=0; i < response.data_tarefas.length; i++) {
+            texto3 = texto3+"                        <tr> "
+                        +"                            <td>"+response.data_tarefas[i].id+"</td>"
+                        +"                            <td><a href='#' data-toggle='modal' data-target='#myModal-tarefa' onClick='carregar_tarefa("+response.data_tarefas[i].id+")' onmouseover='window.status=\"Editar Tarefa\"; return true;'>" +response.data_tarefas[i].nome +"</a></td> "
+                        +"                            <td>"+response.data_tarefas[i].descricao+"</td> "
+                        +"                            <td>"+response.data_tarefas[i].esforco+"</td> "
+                        +"                            <td>"+response.data_tarefas[i].responsavel+"</td> "
+                        +"                            <td>"+response.data_tarefas[i].data_inicio+"</td> "
+                        +"                            <td>"+response.data_tarefas[i].data_fim+"</td> "
+                        +"                            <td>"+(response.data_tarefas[i].ativo == 's' ? 'Sim' : 'Não')+"</td> "
+                        +"                        </tr> ";
+                                                }
+                                            }
+                                        
+            texto3 = texto3+"				</tbody> "
+                        +"			</table> "
+                        +"		</div> <!-- end card body-->" 
+                        +"	</div> <!-- end card --> " 
+                        +"</div> <!-- end col--> ";
+
+            div.innerHTML = texto3;
+
+          //  alert(texto3);
+
+            document.getElementById('div-tarefas').appendChild(div);
+
+           },
+       });
+
+
+
+   
+}
+
+
+
+// Fim
+
+
+</script>
+

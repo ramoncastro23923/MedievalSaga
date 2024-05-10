@@ -1,0 +1,18 @@
+Montando o ambiente para rodar o game
+
+1. Instalação do xampp
+2. Instalação do Nodejs
+3. download do arquivo do jogo
+4. Instalação do VS Code
+5. Criar no mysqladmin um novo usuario e um novo banco de dados com base nas informações do arquivo index.js
+6. Restaurar o banco de dados do jogo com base no script de backup
+7. Configurar os arquivos do projeto para conectar no banco de dados
+8. Configurar os arquivos do projeto no VS Code para reconhecer o caminho da aplicação no computador local
+
+logar com usuario e senha abaixo:
+
+facilitador@scrum3d.com
+abc123
+
+saveHistory
+saveHistoryKanban

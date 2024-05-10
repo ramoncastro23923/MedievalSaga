@@ -1,0 +1,18 @@
+// resize de imagens para contador de peças do jogo
+
+npm install image-size --save
+
+Copiar a pasta "/node_modules/image-size/" do notebook para Producao.
+
+
+ALTER TABLE `historias` ADD `ativo` VARCHAR(1) NOT NULL AFTER `passeio`;
+
+
+UPDATE na tabela para habilitar ativo='s' para as historias de 1 a 12 e 31, 32, 35, 36, 42 e 43 em Produção.
+
+
+Criar o caminho = "/public/files/"
+
+
+Criar tabela nova "etapas_jogo"
+

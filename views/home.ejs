@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Scrum 3D Park - Admin</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="/imagens/favicon.ico">
+
+        <!-- plugin css -->
+        <link href="../../novo_layout/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css" /> 
+
+        <!-- App css -->
+        <link href="../../novo_layout/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body>
+
+        <%- include topbar %>
+
+        <%- include left-sidebar %>
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- sample modal content -->
+                    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="myModalLabel">NPS</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="div-nps"></div> 
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+                    
+                    
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+                        <div class="row page-title">
+                            <div class="col-md-12">
+                                <nav aria-label="breadcrumb" class="float-right mt-1">
+                                    <!--<ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="#">Shreyu</a></li>
+                                        <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Advanced</li>
+                                    </ol>-->
+                                    <% if (typeof message !== 'undefined' && message !== null && message.length > 0) { %>
+                                        <div class="alert alert-success col-sm-12"><%= message %></div>
+                                        <!-- redireciona para home depois de 5 segundos -->
+                                        <script>  
+                                          setTimeout(function(){ 
+                                            window.location.href = "/home";
+                                          }, 3000);
+                                        </script>
+                                        
+                                      <% } %>
+
+								<button type="button" onclick="location.href='/home/new_game'" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class='uil uil-file-alt mr-1'></i>
+
+                                                <% if (typeof data !== 'undefined' && data !== null && data > 0) { %>
+                                                  Editar Jogo »
+                                                <% } else { %>
+                                                  Novo Jogo »
+                                                <% } %>
+
+                                            <!--<i class="icon"><span data-feather="chevron-down"></span></i>--></button>
+								<button type="button" class="btn btn-primary dropdown-toggle" onclick="location.href='/home/control_game'" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class='uil uil-file-alt mr-1'></i>Controlar Jogo
+								</button>
+								<button type="button" class="btn btn-primary dropdown-toggle"  onclick="location.href='/home/new_game/pontuar'" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class='uil uil-file-alt mr-1'></i>Repontuar
+								</button>
+								<button type="button" class="btn btn-primary dropdown-toggle" onclick=" window.open('/home/simulacao','_blank')" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class='uil uil-file-alt mr-1'></i>Simulação
+								</button>
+                                </nav>
+
+                                <h4 class="mb-1 mt-0">Jogos</h4>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <table id="basic-datatable" class="table dt-responsive nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>Código</th>
+                                                    <th>Status</th>
+                                                    <th>NPS</th>
+                                                    <th>Data Criação</th>
+                                                    <th>Data Atualização</th>
+                                                    
+                                                </tr>
+                                            </thead>
+
+
+                                        
+                                            <tbody>
+                                                <%
+                                                if(typeof games_list !== 'undefined' && games_list !== null){
+                                                for(var i=0; i < games_list.length; i++) {%>
+                                                    <tr>
+                                                        <td><%= games_list[i].codigo %></td>
+                                                        <td><%= games_list[i].status %></td>
+
+                                                        
+                                                        <% 
+                                                        var tem_nps = false;
+                                                        for(var z=0; z < nps_list.length; z++) {%>
+                                                            <%
+                                                            if(games_list[i].id == nps_list[z].id_jogo){
+                                                                tem_nps = true;
+                                                            %>
+                                                        <td>
+                                                            <!-- <a href="#" onClick="carregar(<%=games_list[i].id%>)" onmouseover="window.status='Exibir detalhes'; return true;"> <%= nps_list[z].nps %></a> -->
+                                                            <a href="#" data-toggle="modal" data-target="#myModal" onClick="carregar(<%=games_list[i].id%>)" onmouseover="window.status='Exibir detalhes'; return true;"> <%= nps_list[z].nps %></a>
+                                                        </td>
+                                                            <% break; 
+                                                            } 
+                                                            %>
+                                                        <%}
+                                                        if(!tem_nps){ %>
+                                                            <td> - </td>
+                                                        <% }
+                                                        %>
+
+                                                        <td><%= games_list[i].data_criacao %></td>
+                                                        <td><%= games_list[i].data_atualizacao %></td>
+
+                                                    </tr>
+                                                <%
+                                                }
+                                                }
+                                                %>
+                                                
+                                            </tbody>
+                                        </table>
+
+                                    </div> <!-- end card body-->
+                                </div> <!-- end card -->
+                            </div><!-- end col-->
+                        </div>
+                        <!-- end row-->
+                        
+                    </div> <!-- container-fluid -->
+
+                </div> <!-- content -->
+
+                <%- include footer-new-layout %>
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+
+        </div>
+        <!-- END wrapper -->
+
+        
+        <%- include right-sidebar %>
+
+        
+
+        <!-- Vendor js -->
+        <script src="../../novo_layout/assets/js/vendor.min.js"></script>
+
+        <!-- datatable js -->
+        <script src="../../novo_layout/assets/libs/datatables/jquery.dataTables.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.responsive.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+        
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.buttons.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.html5.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.flash.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.print.min.js"></script>
+
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.select.min.js"></script>
+
+        <!-- Datatables init -->
+        <script src="../../novo_layout/assets/js/pages/datatables.init.js"></script>
+
+        <!-- App js -->
+        <script src="../../novo_layout/assets/js/app.min.js"></script>
+        
+    </body>
+</html>
+<script>
+
+    function carregar(id){
+
+        $.ajax({
+            url: "/game/carregar_nps",
+            data: { 
+                    id_jogo: id 
+                    },
+            type: "POST",
+            beforeSend: function() {
+                //$("#" + formName).html(preloaderAzul);
+            },
+            success: function(response) {
+                console.log('Resposta ajax:' + response.list_aval[0].e_mail);
+
+                $( "div" ).remove( "#div-form-nps" );
+
+                const div = document.createElement('div');
+                //div.className = 'row';
+                // div.innerHTML = "<div id='div-obrigado'><div class='container box cor_totais font'>Obrigado!</div><br>"
+                
+                var texto = "<div class='row' id='div-form-nps'> "
+
+                    + "	<div class='col-12'> "
+                    + "		<div class='card'> "
+                    + "			<div class='card-body'> "
+                    + " "
+                    + "				<table id='basic-datatable' class='table dt-responsive nowrap'> "
+                    + "					<thead> "
+                    + "						<tr> "
+                    + "							<th>E-mail</th> "
+                    + "							<th>Comentário</th> "
+                    + "							<th>NPS</th> "
+                    + "							<th>Data Atualização</th> "
+                    + "						</tr> "
+                    + "					</thead> "
+                    + " "
+                    + "					<tbody> "
+                                            if(typeof response.list_aval !== 'undefined' && response.list_aval !== null){
+                                                for(var i=0; i < response.list_aval.length; i++) {
+                                                    console.log('Notas: ' + response.list_aval[i].e_mail);
+                    texto = texto + "			<tr> "
+                    + "								<td>"+ response.list_aval[i].e_mail +"</td> "
+                    + "								<td>"+ response.list_aval[i].comentarios +"</td> "
+                    + "								<td>"
+
+                        if(response.list_aval[i].nota == '0'){
+                            texto = texto + "<img src='../../assets/images/neutral_t3q8hz.svg' alt='' height='24' />"
+                        } else if(response.list_aval[i].nota == '-1'){
+                            texto = texto + "<img src='../../assets/images/sad_bj1tuj.svg' alt='' height='24' />"
+                        } else {
+                            texto = texto + "<img src='../../assets/images/happy_ampvnc.svg' alt='' height='24' />"
+                        }
+                        
+                        texto = texto +"</td> "
+                    + "								<td>"+ response.list_aval[i].data_atualizacao +"</td> "
+                    + " "
+                    + "							</tr> "
+                                                }
+                                            }
+                    texto = texto + "	</tbody> "
+                    + "				</table> "
+                    + " "
+                    + "			</div> <!-- end card body--> "
+                    + "		</div> <!-- end card --> "
+                    + "	</div><!-- end col--> "
+                    + "</div>"
+                    + "<!-- end row-->";
+                    
+
+                +"<div class='container'> "
+                +"	<button class='button' type='button'  onClick='fecharModal()''>Fechar</button> "
+                +"</div>";
+
+                div.innerHTML = texto;
+
+                // console.log(texto);
+
+                document.getElementById('div-nps').appendChild(div);
+            },
+        });
+    }
+
+</script>

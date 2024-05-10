@@ -1,0 +1,15 @@
+
+ALTER TABLE `historias` ADD `jogo_fisico` VARCHAR(1);
+UPDATE `historias` SET `jogo_fisico` = 'n' WHERE  id < 51;
+
+INSERT INTO `historias`(`id`, `numero`, `titulo`, `quantidade_pecas`, `roi_diario`, `tamanho`, `data_criacao`, `passeio`, `ativo`, `jogo_fisico`) VALUES (NULL, 1, 'DILOFOSSAURO',41,205, 'M', NOW(),'n','s','s');
+INSERT INTO `historias`(`id`, `numero`, `titulo`, `quantidade_pecas`, `roi_diario`, `tamanho`, `data_criacao`, `passeio`, `ativo`, `jogo_fisico`) VALUES (NULL, 2, 'PTERODACTILO',28,140, 'M', NOW(),'n','s','s');
+INSERT INTO `historias`(`id`, `numero`, `titulo`, `quantidade_pecas`, `roi_diario`, `tamanho`, `data_criacao`, `passeio`, `ativo`, `jogo_fisico`) VALUES (NULL, 3, 'TIRANOSSAURO-REX',27,135, 'M', NOW(),'n','s','s');
+INSERT INTO `historias`(`id`, `numero`, `titulo`, `quantidade_pecas`, `roi_diario`, `tamanho`, `data_criacao`, `passeio`, `ativo`, `jogo_fisico`) VALUES (NULL, 4, 'JOBARIA',44,220, 'G', NOW(),'n','s','s');
+INSERT INTO `historias`(`id`, `numero`, `titulo`, `quantidade_pecas`, `roi_diario`, `tamanho`, `data_criacao`, `passeio`, `ativo`, `jogo_fisico`) VALUES (NULL, 5, 'VELOCIRAPTOR',41,205, 'M', NOW(),'n','s','s');
+INSERT INTO `historias`(`id`, `numero`, `titulo`, `quantidade_pecas`, `roi_diario`, `tamanho`, `data_criacao`, `passeio`, `ativo`, `jogo_fisico`) VALUES (NULL, 6, 'PLESIOSSAURO',52,260, 'G', NOW(),'n','s','s');
+INSERT INTO `historias`(`id`, `numero`, `titulo`, `quantidade_pecas`, `roi_diario`, `tamanho`, `data_criacao`, `passeio`, `ativo`, `jogo_fisico`) VALUES (NULL, 7, 'TRICERATOPS',17,85, 'P', NOW(),'n','s','s');
+INSERT INTO `historias`(`id`, `numero`, `titulo`, `quantidade_pecas`, `roi_diario`, `tamanho`, `data_criacao`, `passeio`, `ativo`, `jogo_fisico`) VALUES (NULL, 8, 'ALOSSAURO',48,240, 'M', NOW(),'n','s','s');
+INSERT INTO `historias`(`id`, `numero`, `titulo`, `quantidade_pecas`, `roi_diario`, `tamanho`, `data_criacao`, `passeio`, `ativo`, `jogo_fisico`) VALUES (NULL, 9, 'ESTIRACOSSAURO',41,205, 'M', NOW(),'n','s','s');
+INSERT INTO `historias`(`id`, `numero`, `titulo`, `quantidade_pecas`, `roi_diario`, `tamanho`, `data_criacao`, `passeio`, `ativo`, `jogo_fisico`) VALUES (NULL, 10, 'MAMUTE',19,95, 'P', NOW(),'n','s','s');
+INSERT INTO `historias`(`id`, `numero`, `titulo`, `quantidade_pecas`, `roi_diario`, `tamanho`, `data_criacao`, `passeio`, `ativo`, `jogo_fisico`) VALUES (NULL, 21, 'AVIÃO',14,70, 'P', NOW(),'n','s','s');

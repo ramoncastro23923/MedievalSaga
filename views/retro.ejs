@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+
+.close {
+	color: #000;
+	font: 14px/100% arial, sans-serif;
+	position: absolute;
+	right: 5px;
+	text-decoration: none;
+	text-shadow: 0 1px 0 #ccc;
+	top: 5px;
+	content: 'X'; /* ANSI X letter */
+}
+
+.droptarget {
+  float: left; 
+  width: 350px; 
+  height: 500px;
+  margin: 15px;
+  padding: 10px;
+  border: 1px solid #CCC;
+  border-radius:         5px;
+  box-shadow: 3px 3px 5px rgba(0,0,0,.2);
+  background: #ebecf0;
+}
+.div-text {
+  float: left; 
+  width: 200px; 
+  height: 120px;
+  margin: 15px;
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+}
+.button {
+	border-radius: 8px;
+	background-color: #e7e7e7;
+	border: none;
+	color: black;
+	padding: 12px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 1px 1px;
+	cursor: pointer;
+}
+
+.label{
+	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+	font-weight: bold;
+}
+.textarea-text {
+	border:none; 
+	background: transparent; 
+	outline: 0; 
+	width: 330px; 
+	height: 40px;
+	overflow: auto;
+	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+}
+.card {
+    position: relative;
+	margin-bottom: 10px;
+	
+	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+	
+	/*padding-bottom: 100px;*/
+
+    width: 330px;
+    min-height: 40px;
+    padding: 7px;
+
+    background: #FC3;
+    border: 1px solid #FD5;
+
+    -moz-border-radius:    5px;
+    -webkit-border-radius: 5px;
+    border-radius:         5px;
+
+    -moz-box-shadow:    3px 3px 5px rgba(0,0,0,.2);
+    -webkit-box-shadow: 3px 3px 5px rgba(0,0,0,.2);
+    box-shadow:         3px 3px 5px rgba(0,0,0,.2);
+
+    cursor: url(grab.cur);
+    cursor: -moz-grab;
+
+	
+}
+
+.yellow { background: #FC3; border-color: #FD5 } -- yellow is default */
+.orange { background: #F91; border-color: #FA3 }
+.blue   { background: #8DCCE0; border-color: #82C5F0 }
+.red    { background: #EB7565; border-color: #E54 }
+.green  { background: #4DF780; border-color: #9D6 }
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<link rel="shortcut icon" href="/imagens/favicon.ico" type="image/x-icon" />
+</head>
+<body style="background-image: url(../../assets/images/general/fundo-dino-limpo.jpg);">
+
+<div align="center">
+<table>
+<tr>
+<td>
+<div style="margin-left: 16px; ">
+	<div class="card">
+		<textarea class="textarea-text" name="Text1" id="entrada-positivos" placeholder="Digite aqui" cols="40" rows="5"></textarea>
+	</div>
+	<button class="button" onclick="adicionar('positivos', 'green')">Adicionar cartão</button>
+</div>
+</td>
+<td>
+<div style="margin-left: 16px;">
+	<div class="card">
+		<textarea class="textarea-text" name="Text1" id="entrada-melhorias" placeholder="Digite aqui" cols="40" rows="5"></textarea>
+	</div>
+	<button class="button" onclick="adicionar('melhorias', 'red')">Adicionar cartão</button>
+</div>
+</td>
+<td>
+<div style="margin-left: 16px;">
+	<div class="card">
+		<textarea class="textarea-text" name="Text1" id="entrada-planos" placeholder="Digite aqui" cols="40" rows="5"></textarea>
+	</div>
+	<button class="button" onclick="adicionar('planos', 'blue')">Adicionar cartão</button>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+	<div id="div-positivos" class="droptarget"><label class="label">Pontos Positivos</label></div>
+</td>
+<td>
+	<div id="div-melhorias" class="droptarget"><label class="label">Pontos de Melhoria</label></div>
+</td>
+<td>
+	<div id="div-planos" class="droptarget"><label class="label">Plano de Ação</label></div>
+</td>
+</tr>
+
+</table>
+</div>
+
+<p id="demo"></p>
+
+<script>
+/* Events fired on the drag target */
+
+document.addEventListener("dragstart", function(event) {
+  // The dataTransfer.setData() method sets the data type and the value of the dragged data
+  event.dataTransfer.setData("Text", event.target.id);
+  
+  // Output some text when starting to drag the p element
+  document.getElementById("demo").innerHTML = "Started to drag the p element.";
+  
+  // Change the opacity of the draggable element
+  event.target.style.opacity = "0.4";
+});
+
+// While dragging the p element, change the color of the output text
+document.addEventListener("drag", function(event) {
+  document.getElementById("demo").style.color = "red";
+});
+
+// Output some text when finished dragging the p element and reset the opacity
+document.addEventListener("dragend", function(event) {
+  document.getElementById("demo").innerHTML = "Finished dragging the p element.";
+  event.target.style.opacity = "1";
+
+  console.log('Div: ' + event.target);
+  console.log('Top: ' + event.clientY);
+
+});
+
+/* Events fired on the drop target */
+
+// When the draggable p element enters the droptarget, change the DIVS's border style
+document.addEventListener("dragenter", function(event) {
+  if ( event.target.className == "droptarget" ) {
+    //event.target.style.border = "3px dotted red";
+  }
+});
+
+// By default, data/elements cannot be dropped in other elements. To allow a drop, we must prevent the default handling of the element
+document.addEventListener("dragover", function(event) {
+  event.preventDefault();
+});
+
+// When the draggable p element leaves the droptarget, reset the DIVS's border style
+document.addEventListener("dragleave", function(event) {
+  if ( event.target.className == "droptarget" ) {
+    event.target.style.border = "";
+  }
+});
+
+/* On drop - Prevent the browser default handling of the data (default is open as link on drop)
+   Reset the color of the output text and DIV's border color
+   Get the dragged data with the dataTransfer.getData() method
+   The dragged data is the id of the dragged element ("drag1")
+   Append the dragged element into the drop element
+*/
+document.addEventListener("drop", function(event) {
+  event.preventDefault();
+  if ( event.target.className == "droptarget" ) {
+    document.getElementById("demo").style.color = "";
+    event.target.style.border = "";
+    var data = event.dataTransfer.getData("Text");
+    event.target.appendChild(document.getElementById(data));
+  }
+});
+
+
+// Keep everything we need outside global scope
+var App = {};
+
+App.socket = io.connect('<%=url_sistema%>');
+
+App.socket.emit('subscribe', '<%=codigo_jogo%>-<%=time_email%>');
+
+App.socket.on('update_card', function (data) {
+	
+	const div = document.createElement('div');
+	div.className = 'row';
+	div.innerHTML = "<div class='card "+data.cor+"' draggable='false' id='drag-"+data.tipo+"-"+data.uuid+"'> " 
+		+ "<a href='#' onclick='remover(\""+data.uuid+"\", \""+data.tipo+"\")' class='close'>X</a> "
+		+ "<textarea readonly class='textarea-text' name='text-"+data.tipo+"' cols='40' rows='5'>"+data.conteudo+"</textarea> "
+	+ "</div>";
+	
+	document.getElementById('div-'+data.tipo).appendChild(div);
+	document.getElementById('entrada-'+data.tipo).value = "";
+});
+
+App.socket.on('remove_card', function (data) {
+
+	document.getElementById('drag-'+data.tipo+'-'+data.uuid).remove();
+
+	console.log('Removeu uuid:' +data.uuid);
+
+});
+
+carregarQuadro();
+
+function carregarQuadro(){
+	var room = "<%=codigo_jogo%>-<%=time_email%>";
+
+	$.ajax({
+		url: "/retrospective/carregar",
+		data: { room: room },
+		type: "POST",
+		beforeSend: function() {
+			//$("#" + formName).html(preloaderAzul);
+		},
+		success: function(response) {
+			console.log('Resposta ajax carregar:' + response.conteudo);
+			// $("#" + formName).html(response);
+
+			//console.log('Chamando o enviar_card no socket');
+		},
+	});
+}
+
+function remover(uuid, tipo){
+	var room = "<%=codigo_jogo%>-<%=time_email%>";
+
+	$.ajax({
+		url: "/retrospective/remove",
+		data: { room: room, uuid: uuid, tipo: tipo },
+		type: "POST",
+		beforeSend: function() {
+			//$("#" + formName).html(preloaderAzul);
+		},
+		success: function(response) {
+			console.log('Resposta ajax remover:' + response.conteudo);
+			// $("#" + formName).html(response);
+		},
+	});
+}
+
+function adicionar(tipo, cor){
+	var uuid = create_UUID(); 
+	var conteudo = document.getElementById("entrada-"+tipo).value;
+
+	if(conteudo == ''){
+		alert('Informe um valor para o item de ' + tipo + ' e em seguida tente adicionar.');
+
+		return;
+	}
+
+	var room = "<%=codigo_jogo%>-<%=time_email%>";
+
+	$.ajax({
+		url: "/retrospective/save",
+		data: { uuid: uuid, tipo: tipo, conteudo: conteudo, cor: cor, room: room },
+		type: "POST",
+		beforeSend: function() {
+			//$("#" + formName).html(preloaderAzul);
+		},
+		success: function(response) {
+			console.log('Resposta ajax:' + response.conteudo);
+			// $("#" + formName).html(response);
+
+			//console.log('Chamando o enviar_card no socket');
+		},
+	});
+}
+
+function create_UUID(){
+    var dt = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+}
+
+</script>
+</body>
+</html>

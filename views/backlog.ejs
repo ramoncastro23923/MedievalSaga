@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Skyborne Adventure Quest</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="/imagens/favicon.ico">
+
+        <!-- plugin css -->
+        <link href="../../novo_layout/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css" /> 
+
+        <!-- App css -->
+        <link href="../../novo_layout/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body>
+
+        <%- include topbar %>
+
+        <%- include left-sidebar %>
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Começo Modal Tarefa-->
+                    
+                    <div id="myModal-tarefa" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="myModalLabel">Detalhes da Tarefa</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="div-modal-tarefa">
+                                    <div ></div> 
+                                </div>
+                                
+                                <div class="modal-body" id="div-modal-nova-tarefa">
+                                    <div ></div> 
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                    <button type="button" onclick="salvar_tarefa()" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                    
+                    <!--Fim Modal Tarefa-->
+                    
+
+                    <!--Inicio tarefas -->
+
+                                        <!-- Start Content-->
+                                        <div class="container-fluid">
+                                            <div class="row page-title">
+                                                <div class="col-md-12">
+                                                    <nav aria-label="breadcrumb" class="float-right mt-1">
+                                                    </nav>
+                    
+                                                    <h4 class="mb-1 mt-0">Tarefas</h4>
+                                                    <h5 class="mb-1 mt-0">
+                                                    <a href="#" data-toggle="modal" data-target="#myModal-tarefa" onClick="carregar_tarefa(0)">
+                                                        <i data-feather="plus-square"></i>
+                                                        <span> Criar tarefas</span>
+                                                    </a>
+                                                    </h5>
+                                                </div>
+                                            </div>
+                    
+                                            <div class="row" id="div-tarefas">
+                                                <div id="div-corpo-tarefas"class="col-12"> 
+                                                    <div class="card"> 
+                                                        <div class="card-body"> 
+                                                            <table id="tabela-tarefa" class="table dt-responsive nowrap"> 
+                                                                <thead>	
+                                                                    <tr> 
+                                                                        <th>ID</th> 
+                                                                        <th>Nome</th> 
+                                                                        <th>Descrição</th> 
+                                                                        <th>Dificuldade</th> 
+                                                                        <th>Responsável</th> 
+                                                                        <th>Data início</th> 
+                                                                        <th>Data fim</th> 
+                                                                        <th>Etapa</th> 
+                                                                    </tr> 
+                                                                </thead> 
+                                                                <tbody> 
+                                                                    <%
+                                                                    if(typeof data_tarefas !== 'undefined' && data_tarefas !== null){
+                                                                    for(var i=0; i < data_tarefas.length; i++) {%>
+                                                                        <tr>
+                                                                            <td><%= data_tarefas[i].id %></td>
+                                                                            <td><a href="#" data-toggle="modal" data-target="#myModal-tarefa" onClick="carregar_tarefa(<%=data_tarefas[i].id%>)" onmouseover="window.status='Editar tarefa'; return true;"> <%= data_tarefas[i].nome %></a></td>
+                                                                            <td><%= data_tarefas[i].descricao %></td>
+                                                                            <td><%= data_tarefas[i].esforco %></td>
+                                                                            <td><%= data_tarefas[i].responsavel %></td>
+                                                                            <td><%= data_tarefas[i].data_inicio %></td>
+                                                                            <td><%= data_tarefas[i].data_fim %></td>
+                                                                            <td><%= (data_tarefas[i].etapa).replace('div-','').replace('-',' ') %></td>
+                                                                        </tr>
+                                                                    <%
+                                                                    }
+                                                                    }
+                                                                    %>
+                                                                </tbody> 
+                                                            </table> 
+                                                        </div> <!-- end card body--> 
+                                                    </div> <!-- end card --> 
+                                                </div> <!-- end col--> 
+                                            </div>
+                                            <!-- end row-->
+                                            
+                                        </div> <!-- container-fluid -->
+                    
+
+                    <!--Fim tarefas-->
+
+                </div> <!-- content -->
+
+                <%- include footer-new-layout %>
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+
+        </div>
+        <!-- END wrapper -->
+
+        
+        <%- include right-sidebar %>
+
+        
+
+        <!-- Vendor js -->
+        <script src="../../novo_layout/assets/js/vendor.min.js"></script>
+
+        <!-- datatable js -->
+        <script src="../../novo_layout/assets/libs/datatables/jquery.dataTables.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.responsive.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+        
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.buttons.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.html5.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.flash.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.print.min.js"></script>
+
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.select.min.js"></script>
+
+        <!-- Datatables init -->
+        <script src="../../novo_layout/assets/js/pages/datatables.init.js"></script>
+
+        <!-- App js -->
+        <script src="../../novo_layout/assets/js/app.min.js"></script>
+
+        <!-- Mascara data--> 
+
+        <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>   
+         
+
+    </body>
+</html>
+<script>
+
+
+function convertData (valor){
+    
+    var partesData = valor.split("/");
+    var data_formatada = new Date(partesData[2], partesData[1] - 1, partesData[0]);
+
+    return data_formatada;
+} 
+
+
+function carregar_tarefa(id){
+
+//  alert('ID campanha: ' + id);
+//  return;
+
+   if (id == 0){
+       var texto_membros = '';
+       $.ajax({
+                url: "/users/carregar_membros_time",
+           data: { 
+                   },
+           type: "POST",
+           beforeSend: function() {
+               //$("#" + formName).html(preloaderAzul);
+           },
+           success: function(response) {
+                if(typeof response.data_membros_time !== 'undefined' && response.data_membros_time !== null){
+                    for(var z=0; z < response.data_membros_time.length; z++) { 
+                                                //alert(response.data_times[z].nome);          
+    texto_membros = texto_membros + " <option value='"+response.data_membros_time[z].id+"'>"+response.data_membros_time[z].nome+ " </option>"; 
+						}
+			    }
+            
+           },
+       });
+
+//       alert(id);
+       $( "div" ).remove( "#div-form-nova-tarefa" );
+       $( "div" ).remove( "#div-form-edicao-tarefa" );
+
+       const div_nova = document.createElement('div');
+       // alert(response.data[0].nome)
+
+        var texto2 = "<div class='card' id='div-form-nova-tarefa'>"
+        //Não sei se será utilizado, separar depois adequadamente|| Ramon. Minha sugestão é usar as mesmas tabelas do phpmyadmin dentro de tarefas
+       + "	<div class='card-body'>"
+       + ""
+       + "		<form>"
+       + "			<div class='form-group'>"
+       + "				<label for=''>Nome</label>"
+       + "				<input type='hidden' id='id-tarefa' value='"+id+"'>"
+       + "			    <input class='form-control' id='_nome_tarefa' aria-describedby='emailHelp' placeholder='Informe o nome'> "
+       + "			</div>"
+       + "			<div class='form-group'>"
+       + "				<label for=''>Descrição</label>"
+       + "			    <textarea type='textarea' class='form-control' id='_descricao_tarefa' aria-describedby='emailHelp' placeholder='Informe a descricao' rows='5'></textarea> "
+       + "			</div>"
+       + " <div class='form-group'>"
+                + "				<div class='form-group mt-3 mt-sm-0'>"
+                + "					<label>Dificuldade</label>"
+                + "         			<select data-plugin='customselect' id='_esforco' class='form-control' data-placeholder='Selecione a dificuldade'>"
+                + "						    <option value='0'>Nenhum</option>"
+                + "						    <option value='1'>1 ponto</option>"
+                + "						    <option value='2'>2 pontos</option>"
+                + "						    <option value='3'>3 pontos</option>"
+                + "						    <option value='5'>5 pontos</option>"
+                + "						    <option value='8'>8 pontos</option>"
+                + "						    <option value='13'>13 pontos</option>"
+                + "						    <option value='21'>21 pontos</option>"
+                + "	                    </select>"
+                + "				</div>"
+                + "			</div>"
+
+                + " <div class='form-group'>"
+                + "				<div class='form-group mt-3 mt-sm-0'>"
+                + "					<label>Responsável</label>"
+
+                + "					<select data-plugin='customselect' id='_responsavel' class='form-control' data-placeholder='Selecione um time'>"
+                + "						<option value='0'>Nenhum</option>";
+				
+                    texto2 = texto2 + texto_membros;
+                                        texto2 = texto2 + "		</select>"
+										
+                + "				</div>"
+                + "			</div>"
+
+
+       + "		</form>"
+       + "	</div> <!-- end card-body-->"
+       + "</div> <!-- end card-->";
+
+       div_nova.innerHTML = texto2;
+
+       console.log(texto2);
+
+       document.getElementById('div-modal-nova-tarefa').appendChild(div_nova);
+
+       $(document).ready(function () {
+           $('#_data_inicio_tarefa').mask('99/99/9999');
+           $('#_data_fim_tarefa').mask('99/99/9999');
+           return false;
+       });
+
+   } else {
+
+       $.ajax({
+                url: "/tarefa/carregar_detalhe_tarefa",
+           data: { 
+                   id_tarefa: id
+                   },
+           type: "POST",
+           beforeSend: function() {
+               //$("#" + formName).html(preloaderAzul);
+           },
+           success: function(response) {
+            //alert(response.data_membros_time.length)
+               $( "div" ).remove( "#div-form-edicao-tarefa" );
+               $( "div" ).remove( "#div-form-nova-tarefa" );
+
+               const div = document.createElement('div');
+            //alert(response.data_tarefa[0].nome)
+
+               var texto2 = "<div class='card' id='div-form-edicao-tarefa'>"
+               + "	<div class='card-body'>"
+               + ""
+               + "		<form>"
+               + "			<div class='form-group'>"
+               + "				<label for=''>Nome</label>"
+               + "             <input type='hidden' id='id-tarefa' value='"+id+"'>"
+               + "				<input type='text' class='form-control' id='_nome_tarefa' aria-describedby='emailHelp' placeholder='Informe o objetivo' "
+                               if(typeof response.data_tarefa[0].nome !== 'undefined' && response.data_tarefa[0].nome !== null){
+                                   texto2 = texto2 + " value='"+response.data_tarefa[0].nome+"'";
+                               }
+                               texto2 = texto2 +" >"
+               + "			</div>"
+               + "			<div class='form-group'>"
+                + "				<label for=''>Descrição</label>"
+               + "				<textarea class='form-control' id='_descricao_tarefa' aria-describedby='emailHelp' placeholder='Informe a descrição' rows='5'> "
+                               if(typeof response.data_tarefa[0].descricao !== 'undefined' && response.data_tarefa[0].descricao !== null){
+                                   texto2 = texto2 +response.data_tarefa[0].descricao;
+                               }
+                               texto2 = texto2 +" </textarea>" 
+               + "			</div>"
+
+               + " <div class='form-group'>"
+                + "				<div class='form-group mt-3 mt-sm-0'>"
+                + "					<label>Dificuldade</label>"
+                + "         			<select data-plugin='customselect' id='_esforco' class='form-control' data-placeholder='Selecione a dificuldade'>"
+                + "						    <option value='0'>Nenhum</option>"
+                + "						    <option value='1'>1 ponto</option>"
+                + "						    <option value='2'>2 pontos</option>"
+                + "						    <option value='3'>3 pontos</option>"
+                + "						    <option value='5'>5 pontos</option>"
+                + "						    <option value='8'>8 pontos</option>"
+                + "						    <option value='13'>13 pontos</option>"
+                + "						    <option value='21'>21 pontos</option>"
+                + "	                   </select>"
+                + "             </div>"
+                + "			</div>"
+
+                + " <div class='form-group'>"
+                + "				<div class='form-group mt-3 mt-sm-0'>"
+                + "					<label>Responsável</label>"
+
+                + "					<select data-plugin='customselect' id='_responsavel' class='form-control' data-placeholder='Selecione um time'>"
+                + "						<option value='0'>Nenhum</option>";
+				
+
+										if(typeof response.data_membros_time !== 'undefined' && response.data_tarefa !== null){
+                                            for(var z=0; z < response.data_membros_time.length; z++) { 
+                                                //alert(response.data_times[z].nome);
+                                                
+												if(typeof response.data_tarefa[0].responsavel !== 'undefined' && response.data_tarefa[0].responsavel !== null && response.data_tarefa[0].responsavel == response.data_membros_time[z].id){
+    texto2 = texto2 + "								<option value='"+response.data_membros_time[z].id+"' selected=true>"+response.data_membros_time[z].nome+" </option>"; 
+												} else {                    
+    texto2 = texto2 + "								<option value='"+response.data_membros_time[z].id+"'>"+response.data_membros_time[z].nome+ " </option>"; 
+                                                }
+											}
+										}
+                                        texto2 = texto2 + "		</select>"
+										
+                + "				</div>"
+                + "			</div>"
+
+
+
+                + "			<div class='form-group'>"
+               + "				<label for='dataInicio'>Data início</label>"
+               + "				<label class='form-control' id='_data_inicio_tarefa' >"
+                               if(typeof response.data_tarefa[0].data_inicio !== 'undefined' && response.data_tarefa[0].data_inicio !== null){
+                                   texto2 = texto2 + response.data_tarefa[0].data_inicio;
+                               }
+                               texto2 = texto2 +"</label>"
+               + "				<!-- <small id='emailHelp' class='form-text text-muted'>We'll never share your email with anyone else.</small> -->"
+               + "			</div>"
+
+               + "			<div class='form-group'>"
+               + "				<label for='dataFim'>Data Fim</label>"
+               + "				<label class='form-control' id='_data_fim_tarefa' >"
+                               if(typeof response.data_tarefa[0].data_fim !== 'undefined' && response.data_tarefa[0].data_fim !== null){
+                                   texto2 = texto2 +response.data_tarefa[0].data_fim;
+                               }
+                               texto2 = texto2 +"</label>"
+               + "				<!-- <small id='emailHelp' class='form-text text-muted'>We'll never share your email with anyone else.</small> -->"
+               + "			</div>"
+
+               + "			<div class='form-group mb-3'>"
+               + "				<div class='custom-control custom-switch mb-2'>"
+               + "					<input type='checkbox' class='custom-control-input' id='_ativo_tarefa' "
+               if(typeof response.data_tarefa[0].ativo !== 'undefined' && response.data_tarefa[0].ativo !== null && response.data_tarefa[0].ativo == 's'){
+                   texto2 = texto2 + " checked ";
+               }
+               texto2 = texto2 +" >"
+               + "					<label class='custom-control-label' for='_ativo_tarefa'>Tarefa ativa</label>"
+               + "				</div>"
+               + "			</div>"
+               + "			<!-- <button type='submit' class='btn btn-primary'>Submit</button> -->"
+               + "		</form>"
+               + ""
+               + "	</div> <!-- end card-body-->"
+               + "</div> <!-- end card-->";
+
+               div.innerHTML = texto2;
+              // alert(texto2)
+               console.log(texto2);
+
+               document.getElementById('div-modal-tarefa').appendChild(div);
+
+               if(typeof response.data_tarefa[0].esforco !== 'undefined' && response.data_tarefa[0].esforco !== null ){
+                   document.getElementById('_esforco').value=response.data_tarefa[0].esforco;
+                }
+
+           $(document).ready(function () {
+           $('#_data_inicio_tarefa').mask('99/99/9999');
+           $('#_data_fim_tarefa').mask('99/99/9999');
+           return false;
+               
+               });
+           },
+       });
+
+
+
+
+
+   }
+}
+
+function salvar_tarefa(){
+
+//tratamento de datas
+/*
+var data_inicio_convertida = convertData(document.getElementById('_data_inicio_tarefa').value);
+var data_fim_convertida = convertData(document.getElementById('_data_fim_tarefa').value);
+
+if (data_inicio_convertida > data_fim_convertida) {
+   alert('a data inicial não pode ser maior que a data final')
+   return;
+}
+// to do - tratar para não deixar informar data vazia
+*/
+
+var id = document.getElementById('id-tarefa').value;
+var nome_tarefa = document.getElementById('_nome_tarefa').value;
+var descricao_tarefa = document.getElementById('_descricao_tarefa').value;
+var esforco_tarefa = document.getElementById('_esforco').value;
+//var data_inicio = document.getElementById('_data_inicio_tarefa').value;
+//var data_fim = document.getElementById('_data_fim_tarefa').value;
+var ativo = id == 0 ? 's' : document.getElementById('_ativo_tarefa').checked;
+var responsavel = document.getElementById('_responsavel').value;
+
+   $.ajax({
+       url: "/tarefa/salvar_tarefa",
+       data: { 
+               id_tarefa: id, 
+               nome: nome_tarefa,
+               descricao: descricao_tarefa,
+               esforco: esforco_tarefa,
+               ativo: ativo,
+               responsavel: responsavel
+               },
+       type: "POST",
+       beforeSend: function() {
+           //$("#" + formName).html(preloaderAzul);
+       },  
+       success: function(response) {
+           console.log('Resposta ajax:' + response);
+
+           if(response.message_erro !== ''){
+
+               // document.getElementById("email-jogador").value = "";
+               document.getElementById("resposta").innerHTML = "</br></br>"+response.message_erro;
+                               
+           }
+           else {
+               console.log('Sucesso: ' + response.message);
+
+               location.reload();
+           }
+           
+       },
+   });
+
+
+}
+
+// Início
+
+function carregar_tarefas(){
+
+       $.ajax({
+                url: "/tarefa/list",
+           data: { 
+                   },
+           type: "POST",
+           beforeSend: function() {
+               //$("#" + formName).html(preloaderAzul);
+           },
+           success: function(response) {
+               $( "div" ).remove( "#div-corpo-tarefas" );
+
+            const div = document.createElement('div');
+           // alert(response.data[0].nome)
+
+            var texto3 = "<div id='div-corpo-tarefas' class='col-12'> "
+                        +"	<div class='card'> "
+                        +"		<div class='card-body'> "
+                        +"			<table id='tabela-tarefa' class='table dt-responsive nowrap'> "
+                        +"				<thead>	"
+                        +"					<tr> "
+                        +"						<th>ID</th> "
+                        +"						<th>Nome</th> "
+                        +"						<th>Descrição</th> "
+                        +"						<th>Dificuldade</th> "
+                        +"						<th>Responsável</th> "
+                        +"						<th>Data início</th> "
+                        +"						<th>Data fim</th> "
+                        +"						<th>Ativado</th> "
+                        +"					</tr> "
+                        +"				</thead> "
+                        +"				<tbody> ";
+
+                                             
+                                            if(typeof response.data_tarefas !== 'undefined' && response.data_tarefas !== null){
+                                            for(var i=0; i < response.data_tarefas.length; i++) {
+            texto3 = texto3+"                        <tr> "
+                        +"                            <td>"+response.data_tarefas[i].id+"</td>"
+                        +"                            <td><a href='#' data-toggle='modal' data-target='#myModal-tarefa' onClick='carregar_tarefa("+response.data_tarefas[i].id+")' onmouseover='window.status=\"Editar Tarefa\"; return true;'>" +response.data_tarefas[i].nome +"</a></td> "
+                        +"                            <td>"+response.data_tarefas[i].descricao+"</td> "
+                        +"                            <td>"+response.data_tarefas[i].esforco+"</td> "
+                        +"                            <td>"+response.data_tarefas[i].responsavel+"</td> "
+                        +"                            <td>"+response.data_tarefas[i].data_inicio+"</td> "
+                        +"                            <td>"+response.data_tarefas[i].data_fim+"</td> "
+                        +"                            <td>"+(response.data_tarefas[i].ativo == 's' ? 'Sim' : 'Não')+"</td> "
+                        +"                        </tr> ";
+                                                }
+                                            }
+                                        
+            texto3 = texto3+"				</tbody> "
+                        +"			</table> "
+                        +"		</div> <!-- end card body-->" 
+                        +"	</div> <!-- end card --> " 
+                        +"</div> <!-- end col--> ";
+
+            div.innerHTML = texto3;
+          //  alert(texto3);
+
+            document.getElementById('div-tarefas').appendChild(div);
+
+           },
+       });
+
+
+
+   
+}
+
+
+
+// Fim
+
+
+</script>
+

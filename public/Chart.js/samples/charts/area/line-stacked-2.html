@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Line Chart</title>
+	<script src="../../../Chart.min.js"></script>
+	<script src="../../utils.js"></script>
+	<style>
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div style="width:50%;">
+		<canvas id="canvas"></canvas>
+	</div>
+	<br>
+	
+	<script>
+		var MONTHS = ['Fazer', 'Fazendo', 'Feito'];
+		var config = {
+			type: 'line',
+			data: {
+				labels: ['1', '2', '3', '4'],
+				datasets: [{
+					label: 'Feito',
+					borderColor: window.chartColors.green,
+					backgroundColor: window.chartColors.green,
+					data: [
+						'0', '1', '3', '4'
+					],
+				}, 
+				{
+					label: 'Fazendo',
+					borderColor: window.chartColors.yellow,
+					backgroundColor: window.chartColors.yellow,
+					data: [
+						'1', '2', '1', '0'
+					],
+				},
+				{
+					label: 'Fazer',
+					borderColor: window.chartColors.red,
+					backgroundColor: window.chartColors.red,
+					data: [
+						'3', '1', '1', '1'
+					],
+				},
+				]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Cumulative Flow Diagram - CFD'
+				},
+				tooltips: {
+					mode: 'index',
+				},
+				hover: {
+					mode: 'index'
+				},
+				scales: {
+					xAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: 'Dias das Sprints'
+						}
+					}],
+					yAxes: [{
+						stacked: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Qtde Itens'
+						}
+					}]
+				}
+			}
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myLine = new Chart(ctx, config);
+		};
+
+
+	</script>
+</body>
+
+</html>

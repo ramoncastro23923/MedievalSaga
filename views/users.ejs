@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Scrum 3D Park - Admin</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="/imagens/favicon.ico">
+
+        <!-- plugin css -->
+        <link href="../../novo_layout/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css" /> 
+
+        <!-- <link href="../../novo_layout/assets/libs/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+        <link href="../../novo_layout/assets/libs/select2/select2.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/multiselect/multi-select.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.css" rel="stylesheet" type="text/css" /> -->
+
+        <!-- App css -->
+        <link href="../../novo_layout/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../../novo_layout/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body>
+
+        <%- include topbar %>
+
+        <%- include left-sidebar %>
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- sample modal content -->
+                    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="myModalLabel">Detalhes do Usuário</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="div-modal">
+                                    <div ></div> 
+
+                                    <!-- <div class="col-xl-6"> -->
+                                        
+                                    <!-- </div> -->
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                    <button type="button" onclick="saveUser()" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+                    
+                    
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+                        <div class="row page-title">
+                            <div class="col-md-12">
+                                <nav aria-label="breadcrumb" class="float-right mt-1">
+                                    <!--<ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="#">Shreyu</a></li>
+                                        <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Advanced</li>
+                                    </ol>-->
+
+
+								<!-- <button type="button" class="btn btn-primary dropdown-toggle"  onclick="location.href='/home/new_game/pontuar'" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class='uil uil-file-alt mr-1'></i>Repontuar
+								</button>
+								<button type="button" class="btn btn-primary dropdown-toggle" onclick=" window.open('/home/simulacao','_blank')" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class='uil uil-file-alt mr-1'></i>Simulação
+								</button> -->
+                                </nav>
+
+                                <h4 class="mb-1 mt-0">Usuários</h4>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <table id="basic-datatable" class="table dt-responsive nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Nome</th>
+                                                    <th>E-mail</th>
+                                                    <th>Tipo</th>
+                                                    <th>Ativado</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <%
+                                                if(typeof data !== 'undefined' && data !== null){
+                                                for(var i=0; i < data.length; i++) {%>
+                                                    <tr>
+                                                        <td><%= data[i].id %></td>
+                                                        <td><a href="#" data-toggle="modal" data-target="#myModal" onClick="carregar(<%=data[i].id%>)" onmouseover="window.status='Editar Usuário'; return true;"> <%= data[i].nome %></a></td>
+                                                        <td><%= data[i].email %></td>
+                                                        <td><%= data[i].tipo %></td>
+                                                        <td><%= (data[i].ativo == 's' ? 'Sim' : 'Não') %></td>
+                                                    </tr>
+                                                <%
+                                                }
+                                                }
+                                                %>
+                                                
+                                            </tbody>
+                                        </table>
+
+                                    </div> <!-- end card body-->
+                                </div> <!-- end card -->
+                            </div><!-- end col-->
+                        </div>
+                        <!-- end row-->
+                        
+                    </div> <!-- container-fluid -->
+
+                </div> <!-- content -->
+
+                <%- include footer-new-layout %>
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+
+        </div>
+        <!-- END wrapper -->
+
+        
+        <%- include right-sidebar %>
+
+        
+
+        <!-- Vendor js -->
+        <script src="../../novo_layout/assets/js/vendor.min.js"></script>
+
+        <!-- datatable js -->
+        <script src="../../novo_layout/assets/libs/datatables/jquery.dataTables.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.responsive.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+        
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.buttons.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.html5.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.flash.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/buttons.print.min.js"></script>
+
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+        <script src="../../novo_layout/assets/libs/datatables/dataTables.select.min.js"></script>
+
+        <!-- Datatables init -->
+        <script src="../../novo_layout/assets/js/pages/datatables.init.js"></script>
+
+        <!-- App js -->
+        <script src="../../novo_layout/assets/js/app.min.js"></script>
+        
+    </body>
+</html>
+<script>
+
+    function carregar(id){
+
+        // alert('ID Usuário: ' + id);
+        //return;
+
+        $.ajax({
+            url: "/user/carregar_detalhe_user",
+            data: { 
+                    id_user: id 
+                    },
+            type: "POST",
+            beforeSend: function() {
+                //$("#" + formName).html(preloaderAzul);
+            },
+            success: function(response) {
+                $( "div" ).remove( "#div-form-nps" );
+
+                const div = document.createElement('div');
+               // alert(response.data[0].nome)
+
+                var texto2 = "<div class='card' id='div-form-nps'>"
+                + "	<div class='card-body'>"
+                + ""
+                + "		<form>"
+                + "			<div class='form-group'>"
+                + "				<label for='exampleInputEmail1'>Nome</label>"
+                + "             <input type='hidden' id='id-user' value='"+id+"'>"
+                + "				<input type='email' class='form-control' id='_nome' aria-describedby='emailHelp' placeholder='Informe o nome' "
+                                if(typeof response.data[0].nome !== 'undefined' && response.data[0].nome !== null){
+                                    texto2 = texto2 + " value='"+response.data[0].nome+"'";
+                                }
+                                texto2 = texto2 +" >"
+                + "				<!-- <small id='emailHelp' class='form-text text-muted'>We'll never share your email with anyone else.</small> -->"
+                + "			</div>"
+                + "			<div class='form-group'>"
+                + "				<label for='exampleInputEmail1'>E-mail</label>"
+                + "				<input type='email' class='form-control' id='_email' aria-describedby='emailHelp' placeholder='Informe o e-mail' "
+                                if(typeof response.data[0].email !== 'undefined' && response.data[0].email !== null){
+                                    texto2 = texto2 + " value='"+response.data[0].email+"'";
+                                }
+                                texto2 = texto2 +" >"
+                + "				<!-- <small id='emailHelp' class='form-text text-muted'>We'll never share your email with anyone else.</small> -->"
+                + "			</div>"
+                + "			<div class='form-group'>"
+                + "				<div class='form-group mt-3 mt-sm-0'>"
+                + "					<label>Tipo</label>"
+                + "					<select data-plugin='customselect' id='_tipo' class='form-control' data-placeholder='Selecione um tipo'>"
+                + "						<option value='admin'>Administrador</option>"
+                + "						<option value='rei'>Rei</option>"
+                + "						<option value='sabio'>Sábio</option>"
+                + "						<option value='guerreiro'>Guerreiro</option>"
+                + "					</select>"
+                + "				</div>"
+                + "			</div>"
+
+                + " <div class='form-group'>"
+                + "				<div class='form-group mt-3 mt-sm-0'>"
+                + "					<label>Time</label>"
+
+                + "					<select data-plugin='customselect' id='_time' class='form-control' data-placeholder='Selecione um time'>"
+                + "						<option value='0'>Nenhum</option>";
+				
+
+										if(typeof response.data_times !== 'undefined' && response.data_times !== null){
+                                            for(var z=0; z < response.data_times.length; z++) { 
+                                                //alert(response.data_times[z].nome);
+                                                
+												if(typeof response.data[0].time !== 'undefined' && response.data[0].time !== null && response.data[0].time == response.data_times[z].id){
+    texto2 = texto2 + "								<option value='"+response.data_times[z].id+"' selected=true>"+response.data_times[z].nome+" </option>"; 
+												} else {                    
+    texto2 = texto2 + "								<option value='"+response.data_times[z].id+"'>"+response.data_times[z].nome+ " </option>"; 
+                                                }
+											}
+										}
+										
+                texto2 = texto2 + "		</select>"
+				
+
+                + "				</div>"
+                + "			</div>"
+
+                + "			<div class='form-group mb-3'>"
+                + "				<div class='custom-control custom-switch mb-2'>"
+                + "					<input type='checkbox' class='custom-control-input' id='_ativo' "
+                if(typeof response.data[0].ativo !== 'undefined' && response.data[0].ativo !== null && response.data[0].ativo == 's'){
+                    texto2 = texto2 + " checked ";
+                }
+                texto2 = texto2 +" >"
+                + "					<label class='custom-control-label' for='_ativo'>Usuário ativo</label>"
+                + "				</div>"
+                + "			</div>"
+                + "			<!-- <button type='submit' class='btn btn-primary'>Submit</button> -->"
+                + "		</form>"
+                + ""
+                + "	</div> <!-- end card-body-->"
+                + "</div> <!-- end card-->";
+
+                div.innerHTML = texto2;
+
+                console.log(texto2);
+
+                document.getElementById('div-modal').appendChild(div);
+
+                var millisecondsToWait = 500;
+	
+                setTimeout(function() {
+                    //alert(response.data[0].tipo)
+                    // marco o combo do tipo do usuario
+                    if(typeof response.data[0].tipo !== 'undefined' && response.data[0].tipo !== null){
+                        // pego o campo e marco como selected
+                        const select = document.getElementById('_tipo');
+                        select.value = response.data[0].tipo;
+                    }
+                }, millisecondsToWait);
+            },
+        });
+    }
+
+function saveUser(){
+	var id = document.getElementById('id-user').value;
+    var nome = document.getElementById('_nome').value;
+    var email = document.getElementById('_email').value;
+    var tipo = document.getElementById('_tipo').value;
+    var time = document.getElementById('_time').value; //*
+    var ativo = document.getElementById('_ativo').checked;
+
+		$.ajax({
+			url: "/user/save_user",
+			data: { 
+					id_user: id, 
+                    nome: nome,
+                    email: email,
+                    tipo: tipo, 
+                    time: time,
+					ativo: ativo
+                    // TODO: lembrar de criar usuario que alterou
+					},
+			type: "POST",
+			beforeSend: function() {
+				//$("#" + formName).html(preloaderAzul);
+			},
+			success: function(response) {
+				console.log('Resposta ajax:' + response);
+
+				if(response.message_erro !== ''){
+
+					// document.getElementById("email-jogador").value = "";
+					document.getElementById("resposta").innerHTML = "</br></br>"+response.message_erro;
+									
+				}
+                else {
+                    console.log('Sucesso: ' + response.message);
+
+                    location.reload();
+                }
+				
+			},
+		});
+	
+	
+}
+
+</script>

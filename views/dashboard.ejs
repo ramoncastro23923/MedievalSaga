@@ -1,0 +1,61 @@
+<html lang="en">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<style>
+.container {
+	z-index: 400;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.box{
+  width: 1289px;
+  height: 92px;
+}
+
+</style>
+
+<link rel="shortcut icon" href="/imagens/favicon.ico" type="image/x-icon" />
+<link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+<br>
+<div class="container" align="center">
+  <img src="/imagens/jogo/div_logo.png"  alt="">
+</div>
+<br>
+<div class="container" align="center">
+
+   
+   <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        
+        <% if (typeof message !== 'undefined' && message !== null && message.length > 0) { %>
+          <div class="alert alert-success col-sm-12"><%= message %></div>
+          <!-- redireciona para home depois de 5 segundos -->
+          <script>  
+            setTimeout(function(){ 
+              window.location.href = "/home/dashboard";
+            }, 3000);
+          </script>
+          
+        <% } %>
+        <p>
+          <a class="btn btn-lg btn-primary" href="/home/profile" role="button">Profile view »</a>
+          <a class="btn btn-lg btn-primary" href="/home/new_game" role="button">
+            <% if (typeof data !== 'undefined' && data !== null && data > 0) { %>
+              Editar Jogo »
+            <% } else { %>
+              Novo Jogo »
+            <% } %>
+          </a>
+          <% if (typeof data !== 'undefined' && data !== null && data > 0) { %>
+          <a class="btn btn-lg btn-primary" href="/home/control_game" role="button">Controle do Jogo »</a>
+          <a class="btn btn-lg btn-primary" href="/home/new_game/pontuar" role="button">Repontuar Jogo »</a>
+          <% } %>
+          <a class="btn btn-lg btn-primary" href="/home/simulacao" formtarget="_blank" role="button" >Simulação</a>
+          <a class="btn btn-lg btn-primary" href="/home/logout" role="button" >Sair</a>
+        </p>
+      </div>
+</div>
+    <%- include footer %>

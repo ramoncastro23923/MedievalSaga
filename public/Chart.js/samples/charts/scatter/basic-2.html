@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Scatter Chart</title>
+	<script src="../../../Chart.min.js"></script>
+	<script src="../../utils.js"></script>
+	<style>
+	canvas {
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+	</style>
+</head>
+
+<body>
+	<div style="width:50%">
+		<canvas id="canvas"></canvas>
+	</div>
+	
+	<script>
+		var color = Chart.helpers.color;	
+
+		var scatterChartData = {
+			datasets: [{
+				label: 'Lead Time',
+				borderColor: window.chartColors.blue,
+				backgroundColor: window.chartColors.blue,
+				data: [
+						{
+							x: 0,
+							y: 0
+						},
+						{
+							x: 1,
+							y: 3
+						},
+						{
+							x: 2,
+							y: 1
+						},
+						{
+							x: 3,
+							y: 2
+						},
+						{
+							x: 4,
+							y: 3
+						},
+					]
+			}, 
+			]
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myScatter = Chart.Scatter(ctx, {
+				data: scatterChartData,
+				options: {
+					title: {
+						display: true,
+						text: 'Control Chart'
+					},
+									scales: {
+					xAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: 'Itens Entregues'
+						}
+					}],
+					yAxes: [{
+						stacked: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Qtde de dias'
+						}
+					}]
+				}
+				}
+			});
+		};
+
+	</script>
+</body>
+
+</html>
