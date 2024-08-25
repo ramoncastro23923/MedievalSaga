@@ -46,11 +46,3 @@ Este sistema é projetado para gerenciar histórias de usuário em ambientes ág
 Para acessar o sistema, use as seguintes credenciais:
 - **Usuário**: facilitador@scrum3d.com
 - **Senha**: abc123
-
-## Contato
-
-Se você tiver dúvidas ou precisar de suporte, entre em contato com o desenvolvedor do sistema.
-
----
-
-Esse README oferece uma visão geral e orientações básicas sem entrar em detalhes técnicos do código. Se precisar de algo mais específico, é só me avisar!
